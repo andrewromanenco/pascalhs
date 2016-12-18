@@ -191,3 +191,4 @@ tokenize (match_token "STRING" -> Just (_, restOfInput)) = [STRING] ++ tokenize 
 tokenize (match_token "IMPLEMENTATION" -> Just (_, restOfInput)) = [IMPLEMENTATION] ++ tokenize restOfInput
 tokenize (match_token "[ \t\r\n]+" -> Just (ws, restOfInput)) = [WS ws] ++ tokenize restOfInput
 tokenize [] = [EOF]
+tokenize s@_ = error ("Can't produce token: " ++ take 20 s)
