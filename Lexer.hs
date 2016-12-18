@@ -118,7 +118,7 @@ match_token pattern str = let matched = (str =~+ ("^" ++ pattern, compCaseless +
 
 -- | Produce list of tokens from an input. Fail on error.
 tokenize :: [Char] -> [Token]
-tokenize (match_token "and" -> Just (_, _)) = [AND]
-tokenize (match_token "array" -> Just (_, _)) = [ARRAY]
-tokenize (match_token "[ \t\r\n]+" -> Just (ws, _)) = [WS ws]
+tokenize (match_token "and" -> Just (_, restOfInput)) = [AND] ++ tokenize restOfInput
+tokenize (match_token "array" -> Just (_, restOfInput)) = [ARRAY] ++ tokenize restOfInput
+tokenize (match_token "[ \t\r\n]+" -> Just (ws, restOfInput)) = [WS ws] ++ tokenize restOfInput
 tokenize [] = [EOF]
