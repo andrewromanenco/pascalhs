@@ -242,3 +242,15 @@ main = hspec $ do
 
     it "WS" $
       tokenize "  \t  \r\n " `shouldBe` [WS "  \t  \r\n ", EOF]
+
+    it "Comment1 single line" $
+      tokenize "(*some comment*)" `shouldBe` [COMMENT_1 "(*some comment*)", EOF]
+
+    it "Comment1 multiple lines" $
+      tokenize "(*some\ncomment*)" `shouldBe` [COMMENT_1 "(*some\ncomment*)", EOF]
+
+    it "Comment2 single line" $
+      tokenize "{some comment}" `shouldBe` [COMMENT_2 "{some comment}", EOF]
+
+    it "Comment2 multiple lines" $
+      tokenize "{some\ncomment}" `shouldBe` [COMMENT_2 "{some\ncomment}", EOF]

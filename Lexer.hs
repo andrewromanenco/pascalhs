@@ -84,12 +84,11 @@ data Token = EOF  -- End of file/input
            | STRING  -- S T R I N G
            | IMPLEMENTATION  -- I M P L E M E N T A T I O N
            | WS String  -- [ \t\r\n] -> skip
-           | COMMENT_1  -- '(*' .*? '*)' -> skip
-           | COMMENT_2  -- '{' .*? '}' -> skip
-           | IDENT  -- ('a' .. 'z' | 'A' .. 'Z') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
-           | STRING_LITERAL  -- '\'' ('\'\'' | ~ ('\''))* '\''
-           | NUM_INT  -- ('0' .. '9') + (('.' ('0' .. '9') + (EXPONENT)?)? | EXPONENT)
-           | EXPONENT -- : ('e') ('+' | '-')? ('0' .. '9') +
+           | COMMENT_1 String  -- '(*' .*? '*)' -> skip
+           | COMMENT_2 String  -- '{' .*? '}' -> skip
+           | IDENT String  -- ('a' .. 'z' | 'A' .. 'Z') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
+           | STRING_LITERAL String  -- '\'' ('\'\'' | ~ ('\''))* '\''
+           | NUM_INT String  -- ('0' .. '9') + (('.' ('0' .. '9') + (EXPONENT)?)? | EXPONENT)
            deriving (Show, Eq)
 
 
@@ -118,6 +117,8 @@ match_token pattern str = let matched = (str =~+ ("^" ++ pattern, compCaseless +
 
 -- | Produce list of tokens from an input. Fail on error.
 tokenize :: [Char] -> [Token]
+tokenize (match_token "\\(\\*(.|\r|\n)+?\\*\\)" -> Just (comment, restOfInput)) = [COMMENT_1 comment] ++ tokenize restOfInput
+tokenize (match_token "{(.|\r|\n)+?}" -> Just (comment, restOfInput)) = [COMMENT_2 comment] ++ tokenize restOfInput
 tokenize (match_token "AND" -> Just (_, restOfInput)) = [AND] ++ tokenize restOfInput
 tokenize (match_token "ARRAY" -> Just (_, restOfInput)) = [ARRAY] ++ tokenize restOfInput
 tokenize (match_token "BEGIN" -> Just (_, restOfInput)) = [BEGIN] ++ tokenize restOfInput
