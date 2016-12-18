@@ -119,6 +119,10 @@ match_token pattern str = let matched = (str =~+ ("^" ++ pattern, compCaseless +
 tokenize :: [Char] -> [Token]
 tokenize (match_token "\\(\\*(.|\r|\n)+?\\*\\)" -> Just (comment, restOfInput)) = [COMMENT_1 comment] ++ tokenize restOfInput
 tokenize (match_token "{(.|\r|\n)+?}" -> Just (comment, restOfInput)) = [COMMENT_2 comment] ++ tokenize restOfInput
+tokenize (match_token "'(''|.)+'" -> Just (str, restOfInput)) = [STRING_LITERAL str] ++ tokenize restOfInput
+tokenize (match_token "''" -> Just (str, restOfInput)) = [STRING_LITERAL str] ++ tokenize restOfInput
+tokenize (match_token "\\d+\\.\\d+(e(\\+|-)?\\d+)?" -> Just (num, restOfInput)) = [NUM_INT  num] ++ tokenize restOfInput
+tokenize (match_token "\\d+(e(\\+|\\-)?\\d+)?" -> Just (num, restOfInput)) = [NUM_INT  num] ++ tokenize restOfInput
 tokenize (match_token "AND" -> Just (_, restOfInput)) = [AND] ++ tokenize restOfInput
 tokenize (match_token "ARRAY" -> Just (_, restOfInput)) = [ARRAY] ++ tokenize restOfInput
 tokenize (match_token "BEGIN" -> Just (_, restOfInput)) = [BEGIN] ++ tokenize restOfInput

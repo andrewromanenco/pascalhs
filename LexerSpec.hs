@@ -254,3 +254,24 @@ main = hspec $ do
 
     it "Comment2 multiple lines" $
       tokenize "{some\ncomment}" `shouldBe` [COMMENT_2 "{some\ncomment}", EOF]
+
+    it "STRING_LITERAL str" $
+      tokenize "'str'" `shouldBe` [STRING_LITERAL "'str'", EOF]
+
+    it "STRING_LITERAL empty" $
+      tokenize "''" `shouldBe` [STRING_LITERAL "''", EOF]
+
+    it "STRING_LITERAL with ' inside'" $
+      tokenize "'abc''cba'" `shouldBe` [STRING_LITERAL "'abc''cba'", EOF]
+
+    it "NUM_INT 123" $
+      tokenize "123" `shouldBe` [NUM_INT "123", EOF]
+
+    it "NUM_INT 123.34" $
+      tokenize "123.34" `shouldBe` [NUM_INT "123.34", EOF]
+
+    it "NUM_INT 123e-34" $
+      tokenize "123e-34" `shouldBe` [NUM_INT "123e-34", EOF]
+
+    it "NUM_INT 123.45e56" $
+      tokenize "123.45e56" `shouldBe` [NUM_INT "123.45e56", EOF]
