@@ -18,3 +18,16 @@ main = hspec $ do
 
     it "match is case insensitive" $
       match_token "abc" "aBc123" `shouldBe` Just ("aBc", "123")
+
+  describe "tokenize" $ do
+    it "EOF" $
+     tokenize "" `shouldBe` [EOF]
+
+    it "AND" $
+      tokenize "and" `shouldBe` [AND]
+
+    it "ARRAY" $
+     tokenize "array" `shouldBe` [ARRAY]
+
+    it "WS" $
+      tokenize "  \t  \r\n " `shouldBe` [WS "  \t  \r\n "]

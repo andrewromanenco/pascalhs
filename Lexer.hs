@@ -83,7 +83,7 @@ data Token = EOF  -- End of file/input
            | USES  -- U S E S
            | STRING  -- S T R I N G
            | IMPLEMENTATION  -- I M P L E M E N T A T I O N
-           | WS  -- [ \t\r\n] -> skip
+           | WS String  -- [ \t\r\n] -> skip
            | COMMENT_1  -- '(*' .*? '*)' -> skip
            | COMMENT_2  -- '{' .*? '}' -> skip
            | IDENT  -- ('a' .. 'z' | 'A' .. 'Z') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
@@ -115,3 +115,10 @@ match_token pattern str = let matched = (str =~+ ("^" ++ pattern, compCaseless +
  in if matched == []
    then Nothing
    else Just (matched, stripExistingPrefix matched str)
+
+-- | Produce list of tokens from an input. Fail on error.
+tokenize :: [Char] -> [Token]
+tokenize (match_token "and" -> Just (_, _)) = [AND]
+tokenize (match_token "array" -> Just (_, _)) = [ARRAY]
+tokenize (match_token "[ \t\r\n]+" -> Just (ws, _)) = [WS ws]
+tokenize [] = [EOF]
