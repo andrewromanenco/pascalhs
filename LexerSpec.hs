@@ -12,10 +12,18 @@ main = hspec $ do
 
     it "expression" $
       tokenize "if x<y then a:=45" `shouldBe` [
-        IF  (Cursor 0 0), WS (Cursor 0 0) " ",
-        IDENT (Cursor 0 0) "x", LT_ (Cursor 0 0),IDENT (Cursor 0 0) "y",WS (Cursor 0 0) " ",
-        THEN (Cursor 0 0), WS (Cursor 0 0) " ",
-        IDENT (Cursor 0 0) "a", ASSIGN (Cursor 0 0), NUM_INT (Cursor 0 0) "45", EOF]
+        IF  (Cursor 1 1), WS (Cursor 1 3) " ",
+        IDENT (Cursor 1 4) "x", LT_ (Cursor 1 5),IDENT (Cursor 1 6) "y",WS (Cursor 1 7) " ",
+        THEN (Cursor 1 8), WS (Cursor 1 12) " ",
+        IDENT (Cursor 1 13) "a", ASSIGN (Cursor 1 14), NUM_INT (Cursor 1 16) "45", EOF]
+
+    it "multiline" $
+      tokenize "45\n34a" `shouldBe` [
+        NUM_INT (Cursor 1 1) "45",
+        WS (Cursor 1 3) "\n",
+        NUM_INT (Cursor 2 1) "34",
+        IDENT (Cursor 2 3) "a",
+        EOF]
 
   describe "tokenize samples" $ do
     it "subscripts.pas" $ do
