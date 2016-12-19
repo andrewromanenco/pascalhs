@@ -19,259 +19,216 @@ main = hspec $ do
     it "match is case insensitive" $
       match_token "abc" "aBc123" `shouldBe` Just ("aBc", "123")
 
-  describe "tokenize chain" $ do
-    it "several tokens" $
-      tokenize "and array" `shouldBe` [AND, WS " ", ARRAY, EOF]
-
-  describe "tokenize" $ do
-    it "EOF" $
-      tokenize "" `shouldBe` [EOF]
-
+  describe "tokenize static" $ do
     it "AND" $
-      tokenize "and" `shouldBe` [AND, EOF]
+      nextStaticToken "and" `shouldBe` Just (AND, "and", "")
 
     it "ARRAY" $
-      tokenize "array" `shouldBe` [ARRAY, EOF]
+      nextStaticToken "array" `shouldBe` Just (ARRAY, "array", "")
 
     it "BEGIN" $
-      tokenize "begin" `shouldBe` [BEGIN, EOF]
+      nextStaticToken "begin" `shouldBe` Just (BEGIN, "begin", "")
 
     it "BOOLEAN" $
-      tokenize "boolean" `shouldBe` [BOOLEAN, EOF]
+      nextStaticToken "boolean" `shouldBe` Just (BOOLEAN, "boolean", "")
 
     it "CASE" $
-      tokenize "case" `shouldBe` [CASE, EOF]
+      nextStaticToken "case" `shouldBe` Just (CASE, "case", "")
 
     it "CHAR" $
-      tokenize "char" `shouldBe` [CHAR, EOF]
+      nextStaticToken "char" `shouldBe` Just (CHAR, "char", "")
 
     it "CHR" $
-      tokenize "chr" `shouldBe` [CHR, EOF]
+      nextStaticToken "chr" `shouldBe` Just (CHR, "chr", "")
 
     it "CONST" $
-      tokenize "const" `shouldBe` [CONST, EOF]
+      nextStaticToken "const" `shouldBe` Just (CONST, "const", "")
 
     it "DIV" $
-      tokenize "div" `shouldBe` [DIV, EOF]
+      nextStaticToken "div" `shouldBe` Just (DIV, "div", "")
 
     it "DO" $
-      tokenize "do" `shouldBe` [DO, EOF]
+      nextStaticToken "do" `shouldBe` Just (DO, "do", "")
 
     it "DOWNTO" $
-      tokenize "downto" `shouldBe` [DOWNTO, EOF]
+      nextStaticToken "downto" `shouldBe` Just (DOWNTO, "downto", "")
 
     it "ELSE" $
-      tokenize "else" `shouldBe` [ELSE, EOF]
+      nextStaticToken "else" `shouldBe` Just (ELSE, "else", "")
 
     it "END" $
-      tokenize "end" `shouldBe` [END, EOF]
+      nextStaticToken "end" `shouldBe` Just (END, "end", "")
 
     it "FILE" $
-      tokenize "file" `shouldBe` [FILE, EOF]
+      nextStaticToken "file" `shouldBe` Just (FILE, "file", "")
 
     it "FOR" $
-      tokenize "for" `shouldBe` [FOR, EOF]
+      nextStaticToken "for" `shouldBe` Just (FOR, "for", "")
 
     it "FUNCTION" $
-      tokenize "function" `shouldBe` [FUNCTION, EOF]
+      nextStaticToken "function" `shouldBe` Just (FUNCTION, "function", "")
 
     it "GOTO" $
-      tokenize "goto" `shouldBe` [GOTO, EOF]
+      nextStaticToken "goto" `shouldBe` Just (GOTO, "goto", "")
 
     it "IF" $
-      tokenize "if" `shouldBe` [IF, EOF]
+      nextStaticToken "if" `shouldBe` Just (IF, "if", "")
 
     it "IN" $
-      tokenize "in" `shouldBe` [IN, EOF]
+      nextStaticToken "in" `shouldBe` Just (IN, "in", "")
 
     it "INTEGER" $
-      tokenize "integer" `shouldBe` [INTEGER, EOF]
+      nextStaticToken "integer" `shouldBe` Just (INTEGER, "integer", "")
 
     it "LABEL" $
-      tokenize "label" `shouldBe` [LABEL, EOF]
+      nextStaticToken "label" `shouldBe` Just (LABEL, "label", "")
 
     it "MOD" $
-      tokenize "mod" `shouldBe` [MOD, EOF]
+      nextStaticToken "mod" `shouldBe` Just (MOD, "mod", "")
 
     it "NIL" $
-      tokenize "nil" `shouldBe` [NIL, EOF]
+      nextStaticToken "nil" `shouldBe` Just (NIL, "nil", "")
 
     it "NOT" $
-      tokenize "not" `shouldBe` [NOT, EOF]
+      nextStaticToken "not" `shouldBe` Just (NOT, "not", "")
 
     it "OF" $
-      tokenize "of" `shouldBe` [OF, EOF]
+      nextStaticToken "of" `shouldBe` Just (OF, "of", "")
 
     it "OR" $
-      tokenize "or" `shouldBe` [OR, EOF]
+      nextStaticToken "or" `shouldBe` Just (OR, "or", "")
 
     it "PACKED" $
-      tokenize "packed" `shouldBe` [PACKED, EOF]
+      nextStaticToken "packed" `shouldBe` Just (PACKED, "packed", "")
 
     it "PROCEDURE" $
-      tokenize "procedure" `shouldBe` [PROCEDURE, EOF]
+      nextStaticToken "procedure" `shouldBe` Just (PROCEDURE, "procedure", "")
 
     it "PROGRAM" $
-      tokenize "program" `shouldBe` [PROGRAM, EOF]
+      nextStaticToken "program" `shouldBe` Just (PROGRAM, "program", "")
 
     it "REAL" $
-      tokenize "real" `shouldBe` [REAL, EOF]
+      nextStaticToken "real" `shouldBe` Just (REAL, "real", "")
 
     it "RECORD" $
-      tokenize "record" `shouldBe` [RECORD, EOF]
+      nextStaticToken "record" `shouldBe` Just (RECORD, "record", "")
 
     it "REPEAT" $
-      tokenize "repeat" `shouldBe` [REPEAT, EOF]
+      nextStaticToken "repeat" `shouldBe` Just (REPEAT, "repeat", "")
 
     it "SET" $
-      tokenize "set" `shouldBe` [SET, EOF]
+      nextStaticToken "set" `shouldBe` Just (SET, "set", "")
 
     it "THEN" $
-      tokenize "then" `shouldBe` [THEN, EOF]
+      nextStaticToken "then" `shouldBe` Just (THEN, "then", "")
 
     it "TO" $
-      tokenize "to" `shouldBe` [TO, EOF]
+      nextStaticToken "to" `shouldBe` Just (TO, "to", "")
 
     it "TYPE" $
-      tokenize "type" `shouldBe` [TYPE, EOF]
+      nextStaticToken "type" `shouldBe` Just (TYPE, "type", "")
 
     it "UNTIL" $
-      tokenize "until" `shouldBe` [UNTIL, EOF]
+      nextStaticToken "until" `shouldBe` Just (UNTIL, "until", "")
 
     it "VAR" $
-      tokenize "var" `shouldBe` [VAR, EOF]
+      nextStaticToken "var" `shouldBe` Just (VAR, "var", "")
 
     it "WHILE" $
-      tokenize "while" `shouldBe` [WHILE, EOF]
+      nextStaticToken "while" `shouldBe` Just (WHILE, "while", "")
 
     it "WITH" $
-      tokenize "with" `shouldBe` [WITH, EOF]
+      nextStaticToken "with" `shouldBe` Just (WITH, "with", "")
 
     it "PLUS" $
-      tokenize "+" `shouldBe` [PLUS, EOF]
+      nextStaticToken "+" `shouldBe` Just (PLUS, "+", "")
 
     it "MINUS" $
-      tokenize "-" `shouldBe` [MINUS, EOF]
+      nextStaticToken "-" `shouldBe` Just (MINUS, "-", "")
 
     it "STAR" $
-      tokenize "*" `shouldBe` [STAR, EOF]
+      nextStaticToken "*" `shouldBe` Just (STAR, "*", "")
 
     it "SLASH" $
-      tokenize "/" `shouldBe` [SLASH, EOF]
+      nextStaticToken "/" `shouldBe` Just (SLASH, "/", "")
 
     it "ASSIGN" $
-      tokenize ":=" `shouldBe` [ASSIGN, EOF]
+      nextStaticToken ":=" `shouldBe` Just (ASSIGN, ":=", "")
 
     it "COMMA" $
-      tokenize "," `shouldBe` [COMMA, EOF]
+      nextStaticToken "," `shouldBe` Just (COMMA, ",", "")
 
     it "SEMI" $
-      tokenize ";" `shouldBe` [SEMI, EOF]
+      nextStaticToken ";" `shouldBe` Just (SEMI, ";", "")
 
     it "COLON" $
-      tokenize ":" `shouldBe` [COLON, EOF]
+      nextStaticToken ":" `shouldBe` Just (COLON, ":", "")
 
     it "EQUAL" $
-      tokenize "=" `shouldBe` [EQUAL, EOF]
+      nextStaticToken "=" `shouldBe` Just (EQUAL, "=", "")
 
     it "NOT_EQUAL" $
-      tokenize "<>" `shouldBe` [NOT_EQUAL, EOF]
+      nextStaticToken "<>" `shouldBe` Just (NOT_EQUAL, "<>", "")
 
     it "LT" $
-      tokenize "<" `shouldBe` [LT_, EOF]
+      nextStaticToken "<" `shouldBe` Just (LT_, "<", "")
 
     it "LE" $
-      tokenize "<=" `shouldBe` [LE, EOF]
+      nextStaticToken "<=" `shouldBe` Just (LE, "<=", "")
 
     it "GE" $
-      tokenize ">=" `shouldBe` [GE, EOF]
+      nextStaticToken ">=" `shouldBe` Just (GE, ">=", "")
 
     it "GT" $
-      tokenize ">" `shouldBe` [GT_, EOF]
+      nextStaticToken ">" `shouldBe` Just (GT_, ">", "")
 
     it "LPAREN" $
-      tokenize "(" `shouldBe` [LPAREN, EOF]
+      nextStaticToken "(" `shouldBe` Just (LPAREN, "(", "")
 
     it "RPAREN" $
-      tokenize ")" `shouldBe` [RPAREN, EOF]
+      nextStaticToken ")" `shouldBe` Just (RPAREN, ")", "")
 
     it "LBRACK" $
-      tokenize "[" `shouldBe` [LBRACK, EOF]
+      nextStaticToken "[" `shouldBe` Just (LBRACK, "[", "")
 
     it "LBRACK2" $
-      tokenize "(." `shouldBe` [LBRACK2, EOF]
+      nextStaticToken "(." `shouldBe` Just (LBRACK2, "(.", "")
 
     it "RBRACK" $
-      tokenize "]" `shouldBe` [RBRACK, EOF]
+      nextStaticToken "]" `shouldBe` Just (RBRACK, "]", "")
 
     it "RBRACK2" $
-      tokenize ".)" `shouldBe` [RBRACK2, EOF]
+      nextStaticToken ".)" `shouldBe` Just (RBRACK2, ".)", "")
 
     it "POINTER" $
-      tokenize "^" `shouldBe` [POINTER, EOF]
+      nextStaticToken "^" `shouldBe` Just (POINTER, "^", "")
 
     it "AT" $
-      tokenize "@" `shouldBe` [AT, EOF]
+      nextStaticToken "@" `shouldBe` Just (AT, "@", "")
 
     it "DOT" $
-      tokenize "." `shouldBe` [DOT, EOF]
+      nextStaticToken "." `shouldBe` Just (DOT, ".", "")
 
     it "DOTDOT" $
-      tokenize ".." `shouldBe` [DOTDOT, EOF]
+      nextStaticToken ".." `shouldBe` Just (DOTDOT, "..", "")
 
     it "LCURLY" $
-      tokenize "{" `shouldBe` [LCURLY, EOF]
+      nextStaticToken "{" `shouldBe` Just (LCURLY, "{", "")
 
     it "RCURLY" $
-      tokenize "}" `shouldBe` [RCURLY, EOF]
+      nextStaticToken "}" `shouldBe` Just (RCURLY, "}", "")
 
     it "UNIT" $
-      tokenize "unit" `shouldBe` [UNIT, EOF]
+      nextStaticToken "unit" `shouldBe` Just (UNIT, "unit", "")
 
     it "INTERFACE" $
-      tokenize "interface" `shouldBe` [INTERFACE, EOF]
+      nextStaticToken "interface" `shouldBe` Just (INTERFACE, "interface", "")
 
     it "USES" $
-      tokenize "uses" `shouldBe` [USES, EOF]
+      nextStaticToken "uses" `shouldBe` Just (USES, "uses", "")
 
     it "STRING" $
-      tokenize "string" `shouldBe` [STRING, EOF]
+      nextStaticToken "string" `shouldBe` Just (STRING, "string", "")
 
     it "IMPLEMENTATION" $
-      tokenize "implementation" `shouldBe` [IMPLEMENTATION, EOF]
-
-    it "WS" $
-      tokenize "  \t  \r\n " `shouldBe` [WS "  \t  \r\n ", EOF]
-
-    it "Comment1 single line" $
-      tokenize "(*some comment*)" `shouldBe` [COMMENT_1 "(*some comment*)", EOF]
-
-    it "Comment1 multiple lines" $
-      tokenize "(*some\ncomment*)" `shouldBe` [COMMENT_1 "(*some\ncomment*)", EOF]
-
-    it "Comment2 single line" $
-      tokenize "{some comment}" `shouldBe` [COMMENT_2 "{some comment}", EOF]
-
-    it "Comment2 multiple lines" $
-      tokenize "{some\ncomment}" `shouldBe` [COMMENT_2 "{some\ncomment}", EOF]
-
-    it "STRING_LITERAL str" $
-      tokenize "'str'" `shouldBe` [STRING_LITERAL "'str'", EOF]
-
-    it "STRING_LITERAL empty" $
-      tokenize "''" `shouldBe` [STRING_LITERAL "''", EOF]
-
-    it "STRING_LITERAL with ' inside'" $
-      tokenize "'abc''cba'" `shouldBe` [STRING_LITERAL "'abc''cba'", EOF]
-
-    it "NUM_INT 123" $
-      tokenize "123" `shouldBe` [NUM_INT "123", EOF]
-
-    it "NUM_INT 123.34" $
-      tokenize "123.34" `shouldBe` [NUM_INT "123.34", EOF]
-
-    it "NUM_INT 123e-34" $
-      tokenize "123e-34" `shouldBe` [NUM_INT "123e-34", EOF]
-
-    it "NUM_INT 123.45e56" $
-      tokenize "123.45e56" `shouldBe` [NUM_INT "123.45e56", EOF]
+      nextStaticToken "implementation" `shouldBe` Just (IMPLEMENTATION, "implementation", "")

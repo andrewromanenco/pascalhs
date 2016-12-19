@@ -115,85 +115,78 @@ match_token pattern str = let matched = (str =~+ ("^" ++ pattern, compCaseless +
    then Nothing
    else Just (matched, stripExistingPrefix matched str)
 
--- | Produce list of tokens from an input. Fail on error.
-tokenize :: [Char] -> [Token]
-tokenize (match_token "\\(\\*(.|\r|\n)+?\\*\\)" -> Just (comment, restOfInput)) = [COMMENT_1 comment] ++ tokenize restOfInput
-tokenize (match_token "{(.|\r|\n)+?}" -> Just (comment, restOfInput)) = [COMMENT_2 comment] ++ tokenize restOfInput
-tokenize (match_token "'(''|.)+'" -> Just (str, restOfInput)) = [STRING_LITERAL str] ++ tokenize restOfInput
-tokenize (match_token "''" -> Just (str, restOfInput)) = [STRING_LITERAL str] ++ tokenize restOfInput
-tokenize (match_token "\\d+\\.\\d+(e(\\+|-)?\\d+)?" -> Just (num, restOfInput)) = [NUM_INT  num] ++ tokenize restOfInput
-tokenize (match_token "\\d+(e(\\+|\\-)?\\d+)?" -> Just (num, restOfInput)) = [NUM_INT  num] ++ tokenize restOfInput
-tokenize (match_token "AND" -> Just (_, restOfInput)) = [AND] ++ tokenize restOfInput
-tokenize (match_token "ARRAY" -> Just (_, restOfInput)) = [ARRAY] ++ tokenize restOfInput
-tokenize (match_token "BEGIN" -> Just (_, restOfInput)) = [BEGIN] ++ tokenize restOfInput
-tokenize (match_token "BOOLEAN" -> Just (_, restOfInput)) = [BOOLEAN] ++ tokenize restOfInput
-tokenize (match_token "CASE" -> Just (_, restOfInput)) = [CASE] ++ tokenize restOfInput
-tokenize (match_token "CHAR" -> Just (_, restOfInput)) = [CHAR] ++ tokenize restOfInput
-tokenize (match_token "CHR" -> Just (_, restOfInput)) = [CHR] ++ tokenize restOfInput
-tokenize (match_token "CONST" -> Just (_, restOfInput)) = [CONST] ++ tokenize restOfInput
-tokenize (match_token "DIV" -> Just (_, restOfInput)) = [DIV] ++ tokenize restOfInput
-tokenize (match_token "DOWNTO" -> Just (_, restOfInput)) = [DOWNTO] ++ tokenize restOfInput
-tokenize (match_token "DO" -> Just (_, restOfInput)) = [DO] ++ tokenize restOfInput
-tokenize (match_token "ELSE" -> Just (_, restOfInput)) = [ELSE] ++ tokenize restOfInput
-tokenize (match_token "END" -> Just (_, restOfInput)) = [END] ++ tokenize restOfInput
-tokenize (match_token "FILE" -> Just (_, restOfInput)) = [FILE] ++ tokenize restOfInput
-tokenize (match_token "FOR" -> Just (_, restOfInput)) = [FOR] ++ tokenize restOfInput
-tokenize (match_token "FUNCTION" -> Just (_, restOfInput)) = [FUNCTION] ++ tokenize restOfInput
-tokenize (match_token "GOTO" -> Just (_, restOfInput)) = [GOTO] ++ tokenize restOfInput
-tokenize (match_token "IF" -> Just (_, restOfInput)) = [IF] ++ tokenize restOfInput
-tokenize (match_token "INTEGER" -> Just (_, restOfInput)) = [INTEGER] ++ tokenize restOfInput
-tokenize (match_token "INTERFACE" -> Just (_, restOfInput)) = [INTERFACE] ++ tokenize restOfInput
-tokenize (match_token "IN" -> Just (_, restOfInput)) = [IN] ++ tokenize restOfInput
-tokenize (match_token "LABEL" -> Just (_, restOfInput)) = [LABEL] ++ tokenize restOfInput
-tokenize (match_token "MOD" -> Just (_, restOfInput)) = [MOD] ++ tokenize restOfInput
-tokenize (match_token "NIL" -> Just (_, restOfInput)) = [NIL] ++ tokenize restOfInput
-tokenize (match_token "NOT" -> Just (_, restOfInput)) = [NOT] ++ tokenize restOfInput
-tokenize (match_token "OF" -> Just (_, restOfInput)) = [OF] ++ tokenize restOfInput
-tokenize (match_token "OR" -> Just (_, restOfInput)) = [OR] ++ tokenize restOfInput
-tokenize (match_token "PACKED" -> Just (_, restOfInput)) = [PACKED] ++ tokenize restOfInput
-tokenize (match_token "PROCEDURE" -> Just (_, restOfInput)) = [PROCEDURE] ++ tokenize restOfInput
-tokenize (match_token "PROGRAM" -> Just (_, restOfInput)) = [PROGRAM] ++ tokenize restOfInput
-tokenize (match_token "REAL" -> Just (_, restOfInput)) = [REAL] ++ tokenize restOfInput
-tokenize (match_token "RECORD" -> Just (_, restOfInput)) = [RECORD] ++ tokenize restOfInput
-tokenize (match_token "REPEAT" -> Just (_, restOfInput)) = [REPEAT] ++ tokenize restOfInput
-tokenize (match_token "SET" -> Just (_, restOfInput)) = [SET] ++ tokenize restOfInput
-tokenize (match_token "THEN" -> Just (_, restOfInput)) = [THEN] ++ tokenize restOfInput
-tokenize (match_token "TO" -> Just (_, restOfInput)) = [TO] ++ tokenize restOfInput
-tokenize (match_token "TYPE" -> Just (_, restOfInput)) = [TYPE] ++ tokenize restOfInput
-tokenize (match_token "UNTIL" -> Just (_, restOfInput)) = [UNTIL] ++ tokenize restOfInput
-tokenize (match_token "VAR" -> Just (_, restOfInput)) = [VAR] ++ tokenize restOfInput
-tokenize (match_token "WHILE" -> Just (_, restOfInput)) = [WHILE] ++ tokenize restOfInput
-tokenize (match_token "WITH" -> Just (_, restOfInput)) = [WITH] ++ tokenize restOfInput
-tokenize (match_token "\\+" -> Just (_, restOfInput)) = [PLUS] ++ tokenize restOfInput
-tokenize (match_token "-" -> Just (_, restOfInput)) = [MINUS] ++ tokenize restOfInput
-tokenize (match_token "\\*" -> Just (_, restOfInput)) = [STAR] ++ tokenize restOfInput
-tokenize (match_token "/" -> Just (_, restOfInput)) = [SLASH] ++ tokenize restOfInput
-tokenize (match_token ":=" -> Just (_, restOfInput)) = [ASSIGN] ++ tokenize restOfInput
-tokenize (match_token "," -> Just (_, restOfInput)) = [COMMA] ++ tokenize restOfInput
-tokenize (match_token ";" -> Just (_, restOfInput)) = [SEMI] ++ tokenize restOfInput
-tokenize (match_token ":" -> Just (_, restOfInput)) = [COLON] ++ tokenize restOfInput
-tokenize (match_token "=" -> Just (_, restOfInput)) = [EQUAL] ++ tokenize restOfInput
-tokenize (match_token "<>" -> Just (_, restOfInput)) = [NOT_EQUAL] ++ tokenize restOfInput
-tokenize (match_token "<=" -> Just (_, restOfInput)) = [LE] ++ tokenize restOfInput
-tokenize (match_token "<" -> Just (_, restOfInput)) = [LT_] ++ tokenize restOfInput
-tokenize (match_token ">=" -> Just (_, restOfInput)) = [GE] ++ tokenize restOfInput
-tokenize (match_token ">" -> Just (_, restOfInput)) = [GT_] ++ tokenize restOfInput
-tokenize (match_token "\\(\\." -> Just (_, restOfInput)) = [LBRACK2] ++ tokenize restOfInput
-tokenize (match_token "\\(" -> Just (_, restOfInput)) = [LPAREN] ++ tokenize restOfInput
-tokenize (match_token "\\)" -> Just (_, restOfInput)) = [RPAREN] ++ tokenize restOfInput
-tokenize (match_token "\\[" -> Just (_, restOfInput)) = [LBRACK] ++ tokenize restOfInput
-tokenize (match_token "\\]" -> Just (_, restOfInput)) = [RBRACK] ++ tokenize restOfInput
-tokenize (match_token "\\.\\)" -> Just (_, restOfInput)) = [RBRACK2] ++ tokenize restOfInput
-tokenize (match_token "\\^" -> Just (_, restOfInput)) = [POINTER] ++ tokenize restOfInput
-tokenize (match_token "@" -> Just (_, restOfInput)) = [AT] ++ tokenize restOfInput
-tokenize (match_token "\\.\\." -> Just (_, restOfInput)) = [DOTDOT] ++ tokenize restOfInput
-tokenize (match_token "\\." -> Just (_, restOfInput)) = [DOT] ++ tokenize restOfInput
-tokenize (match_token "{" -> Just (_, restOfInput)) = [LCURLY] ++ tokenize restOfInput
-tokenize (match_token "}" -> Just (_, restOfInput)) = [RCURLY] ++ tokenize restOfInput
-tokenize (match_token "UNIT" -> Just (_, restOfInput)) = [UNIT] ++ tokenize restOfInput
-tokenize (match_token "USES" -> Just (_, restOfInput)) = [USES] ++ tokenize restOfInput
-tokenize (match_token "STRING" -> Just (_, restOfInput)) = [STRING] ++ tokenize restOfInput
-tokenize (match_token "IMPLEMENTATION" -> Just (_, restOfInput)) = [IMPLEMENTATION] ++ tokenize restOfInput
-tokenize (match_token "[ \t\r\n]+" -> Just (ws, restOfInput)) = [WS ws] ++ tokenize restOfInput
-tokenize [] = [EOF]
-tokenize s@_ = error ("Can't produce token: " ++ take 20 s)
+-- | Produce token, match and rest of the input. Or nothing if no token found.
+-- e.g. "and not" -> (AND, "and", " not")
+nextStaticToken :: [Char] -> Maybe (Token, [Char], [Char])
+nextStaticToken (match_token "AND" -> Just (matched, restOfInput)) = Just (AND, matched, restOfInput)
+nextStaticToken (match_token "ARRAY" -> Just (matched, restOfInput)) = Just (ARRAY, matched, restOfInput)
+nextStaticToken (match_token "BEGIN" -> Just (matched, restOfInput)) = Just (BEGIN, matched, restOfInput)
+nextStaticToken (match_token "BOOLEAN" -> Just (matched, restOfInput)) = Just (BOOLEAN, matched, restOfInput)
+nextStaticToken (match_token "CASE" -> Just (matched, restOfInput)) = Just (CASE, matched, restOfInput)
+nextStaticToken (match_token "CHAR" -> Just (matched, restOfInput)) = Just (CHAR, matched, restOfInput)
+nextStaticToken (match_token "CHR" -> Just (matched, restOfInput)) = Just (CHR, matched, restOfInput)
+nextStaticToken (match_token "CONST" -> Just (matched, restOfInput)) = Just (CONST, matched, restOfInput)
+nextStaticToken (match_token "DIV" -> Just (matched, restOfInput)) = Just (DIV, matched, restOfInput)
+nextStaticToken (match_token "DOWNTO" -> Just (matched, restOfInput)) = Just (DOWNTO, matched, restOfInput)
+nextStaticToken (match_token "DO" -> Just (matched, restOfInput)) = Just (DO, matched, restOfInput)
+nextStaticToken (match_token "ELSE" -> Just (matched, restOfInput)) = Just (ELSE, matched, restOfInput)
+nextStaticToken (match_token "END" -> Just (matched, restOfInput)) = Just (END, matched, restOfInput)
+nextStaticToken (match_token "FILE" -> Just (matched, restOfInput)) = Just (FILE, matched, restOfInput)
+nextStaticToken (match_token "FOR" -> Just (matched, restOfInput)) = Just (FOR, matched, restOfInput)
+nextStaticToken (match_token "FUNCTION" -> Just (matched, restOfInput)) = Just (FUNCTION, matched, restOfInput)
+nextStaticToken (match_token "GOTO" -> Just (matched, restOfInput)) = Just (GOTO, matched, restOfInput)
+nextStaticToken (match_token "IF" -> Just (matched, restOfInput)) = Just (IF, matched, restOfInput)
+nextStaticToken (match_token "INTEGER" -> Just (matched, restOfInput)) = Just (INTEGER, matched, restOfInput)
+nextStaticToken (match_token "INTERFACE" -> Just (matched, restOfInput)) = Just (INTERFACE, matched, restOfInput)
+nextStaticToken (match_token "IN" -> Just (matched, restOfInput)) = Just (IN, matched, restOfInput)
+nextStaticToken (match_token "LABEL" -> Just (matched, restOfInput)) = Just (LABEL, matched, restOfInput)
+nextStaticToken (match_token "MOD" -> Just (matched, restOfInput)) = Just (MOD, matched, restOfInput)
+nextStaticToken (match_token "NIL" -> Just (matched, restOfInput)) = Just (NIL, matched, restOfInput)
+nextStaticToken (match_token "NOT" -> Just (matched, restOfInput)) = Just (NOT, matched, restOfInput)
+nextStaticToken (match_token "OF" -> Just (matched, restOfInput)) = Just (OF, matched, restOfInput)
+nextStaticToken (match_token "OR" -> Just (matched, restOfInput)) = Just (OR, matched, restOfInput)
+nextStaticToken (match_token "PACKED" -> Just (matched, restOfInput)) = Just (PACKED, matched, restOfInput)
+nextStaticToken (match_token "PROCEDURE" -> Just (matched, restOfInput)) = Just (PROCEDURE, matched, restOfInput)
+nextStaticToken (match_token "PROGRAM" -> Just (matched, restOfInput)) = Just (PROGRAM, matched, restOfInput)
+nextStaticToken (match_token "REAL" -> Just (matched, restOfInput)) = Just (REAL, matched, restOfInput)
+nextStaticToken (match_token "RECORD" -> Just (matched, restOfInput)) = Just (RECORD, matched, restOfInput)
+nextStaticToken (match_token "REPEAT" -> Just (matched, restOfInput)) = Just (REPEAT, matched, restOfInput)
+nextStaticToken (match_token "SET" -> Just (matched, restOfInput)) = Just (SET, matched, restOfInput)
+nextStaticToken (match_token "THEN" -> Just (matched, restOfInput)) = Just (THEN, matched, restOfInput)
+nextStaticToken (match_token "TO" -> Just (matched, restOfInput)) = Just (TO, matched, restOfInput)
+nextStaticToken (match_token "TYPE" -> Just (matched, restOfInput)) = Just (TYPE, matched, restOfInput)
+nextStaticToken (match_token "UNTIL" -> Just (matched, restOfInput)) = Just (UNTIL, matched, restOfInput)
+nextStaticToken (match_token "VAR" -> Just (matched, restOfInput)) = Just (VAR, matched, restOfInput)
+nextStaticToken (match_token "WHILE" -> Just (matched, restOfInput)) = Just (WHILE, matched, restOfInput)
+nextStaticToken (match_token "WITH" -> Just (matched, restOfInput)) = Just (WITH, matched, restOfInput)
+nextStaticToken (match_token "\\+" -> Just (matched, restOfInput)) = Just (PLUS, matched, restOfInput)
+nextStaticToken (match_token "-" -> Just (matched, restOfInput)) = Just (MINUS, matched, restOfInput)
+nextStaticToken (match_token "\\*" -> Just (matched, restOfInput)) = Just (STAR, matched, restOfInput)
+nextStaticToken (match_token "/" -> Just (matched, restOfInput)) = Just (SLASH, matched, restOfInput)
+nextStaticToken (match_token ":=" -> Just (matched, restOfInput)) = Just (ASSIGN, matched, restOfInput)
+nextStaticToken (match_token "," -> Just (matched, restOfInput)) = Just (COMMA, matched, restOfInput)
+nextStaticToken (match_token ";" -> Just (matched, restOfInput)) = Just (SEMI, matched, restOfInput)
+nextStaticToken (match_token ":" -> Just (matched, restOfInput)) = Just (COLON, matched, restOfInput)
+nextStaticToken (match_token "=" -> Just (matched, restOfInput)) = Just (EQUAL, matched, restOfInput)
+nextStaticToken (match_token "<>" -> Just (matched, restOfInput)) = Just (NOT_EQUAL, matched, restOfInput)
+nextStaticToken (match_token "<=" -> Just (matched, restOfInput)) = Just (LE, matched, restOfInput)
+nextStaticToken (match_token "<" -> Just (matched, restOfInput)) = Just (LT_, matched, restOfInput)
+nextStaticToken (match_token ">=" -> Just (matched, restOfInput)) = Just (GE, matched, restOfInput)
+nextStaticToken (match_token ">" -> Just (matched, restOfInput)) = Just (GT_, matched, restOfInput)
+nextStaticToken (match_token "\\(\\." -> Just (matched, restOfInput)) = Just (LBRACK2, matched, restOfInput)
+nextStaticToken (match_token "\\(" -> Just (matched, restOfInput)) = Just (LPAREN, matched, restOfInput)
+nextStaticToken (match_token "\\)" -> Just (matched, restOfInput)) = Just (RPAREN, matched, restOfInput)
+nextStaticToken (match_token "\\[" -> Just (matched, restOfInput)) = Just (LBRACK, matched, restOfInput)
+nextStaticToken (match_token "\\]" -> Just (matched, restOfInput)) = Just (RBRACK, matched, restOfInput)
+nextStaticToken (match_token "\\.\\)" -> Just (matched, restOfInput)) = Just (RBRACK2, matched, restOfInput)
+nextStaticToken (match_token "\\^" -> Just (matched, restOfInput)) = Just (POINTER, matched, restOfInput)
+nextStaticToken (match_token "@" -> Just (matched, restOfInput)) = Just (AT, matched, restOfInput)
+nextStaticToken (match_token "\\.\\." -> Just (matched, restOfInput)) = Just (DOTDOT, matched, restOfInput)
+nextStaticToken (match_token "\\." -> Just (matched, restOfInput)) = Just (DOT, matched, restOfInput)
+nextStaticToken (match_token "{" -> Just (matched, restOfInput)) = Just (LCURLY, matched, restOfInput)
+nextStaticToken (match_token "}" -> Just (matched, restOfInput)) = Just (RCURLY, matched, restOfInput)
+nextStaticToken (match_token "UNIT" -> Just (matched, restOfInput)) = Just (UNIT, matched, restOfInput)
+nextStaticToken (match_token "USES" -> Just (matched, restOfInput)) = Just (USES, matched, restOfInput)
+nextStaticToken (match_token "STRING" -> Just (matched, restOfInput)) = Just (STRING, matched, restOfInput)
+nextStaticToken (match_token "IMPLEMENTATION" -> Just (matched, restOfInput)) = Just (IMPLEMENTATION, matched, restOfInput)
+nextStaticToken _ = Nothing
