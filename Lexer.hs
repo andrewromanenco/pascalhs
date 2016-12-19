@@ -92,6 +92,16 @@ data Token = EOF  -- End of file/input
            deriving (Show, Eq)
 
 
+-- | Extract value from a dynamic token.
+tokenValue :: Token -> String
+tokenValue(WS s) = s
+tokenValue(COMMENT_1 s) = s
+tokenValue(COMMENT_2 s) = s
+tokenValue(IDENT s) = s
+tokenValue(STRING_LITERAL s) = s
+tokenValue(NUM_INT s) = s
+
+
 -- | Cuts off existing prefix from a string. Attempt to cut off non existing
 -- prefix will fail at runtime.
 stripExistingPrefix :: [Char] -> [Char] -> [Char]
@@ -203,3 +213,17 @@ nextDynamicToken (match_token "\\d+(e(\\+|\\-)?\\d+)?" -> Just (num, restOfInput
 nextDynamicToken (match_token "[ \t\r\n]+" -> Just (ws, restOfInput)) = Just (WS ws, restOfInput)
 nextDynamicToken (match_token "[a-z]([a-z]|[0-9]|_)*" -> Just (ident, restOfInput)) = Just (IDENT ident, restOfInput)
 nextDynamicToken _ = Nothing
+
+
+-- | Produce list of tokens for an input. Or fail with error.
+tokenize :: [Char] -> [Token]
+tokenize [] = [EOF]
+tokenize input = let (staticMatch, dynamicMatch) = (nextStaticToken input, nextDynamicToken input)
+  in case (staticMatch, dynamicMatch) of
+    (Nothing, Nothing) -> error ("Can't produce read: " ++ take 20 input)
+    (Nothing, Just (token, restOfInput)) -> [token] ++ tokenize restOfInput
+    (Just (token, _, restOfInput), Nothing) -> [token] ++ tokenize restOfInput
+    (Just (stoken, smatch, srestOfInput), Just (dtoken, drestOfInput)) -> if length smatch < length (tokenValue dtoken)
+                                                                        then [dtoken] ++ tokenize drestOfInput
+                                                                        else [stoken] ++ tokenize srestOfInput
+-- tokenize s@_ = error ("Can't produce read: " ++ take 20 s)

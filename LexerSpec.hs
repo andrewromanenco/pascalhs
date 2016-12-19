@@ -278,3 +278,10 @@ main = hspec $ do
 
     it "IDENT Abc1" $
       nextDynamicToken "Abc1" `shouldBe` Just (IDENT "Abc1", "")
+
+  describe "tokenize input to list" $ do
+    it "empty" $
+      tokenize "" `shouldBe` [EOF]
+
+    it "expression" $
+      tokenize "if x<y then a:=45" `shouldBe` [IF, WS " ", IDENT "x", LT_,IDENT "y",WS " ", THEN, WS " ", IDENT "a", ASSIGN, NUM_INT "45", EOF]
