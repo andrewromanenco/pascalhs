@@ -10,113 +10,113 @@ import Text.Regex.PCRE
 
 
 -- | Position in input text; line and column.
-data Pos = Pos Int Int
+data Cursor = Cursor Int Int
   deriving(Eq)
 
 
--- | Show for Pos.
-instance Show Pos where
-  show (Pos a b) = "{Ln: " ++ (show a) ++ ", Col: " ++ (show b) ++ "}"
+-- | Show for Cursor.
+instance Show Cursor where
+  show (Cursor a b) = "{Ln: " ++ (show a) ++ ", Col: " ++ (show b) ++ "}"
 
 
 -- | Get line number from a position.
-lineNumber :: Pos -> Int
-lineNumber (Pos n _) = n
+lineNumber :: Cursor -> Int
+lineNumber (Cursor n _) = n
 
 
 -- | Get Column number from a position.
-column :: Pos -> Int
-column (Pos _ n) = n
+column :: Cursor -> Int
+column (Cursor _ n) = n
 
 
 -- | Moves cursor forward to new position.
-moveCursor :: Pos -> [Char] -> Pos
-moveCursor (Pos l c) []  = Pos l c
-moveCursor p@(Pos l c) ('\r':xs)  = moveCursor p xs
-moveCursor (Pos l c) ('\n':xs)  = moveCursor (Pos (l + 1) 1) xs
-moveCursor (Pos l c) (_:xs)  = moveCursor (Pos l (c + 1)) xs
+moveCursor :: Cursor -> [Char] -> Cursor
+moveCursor (Cursor l c) []  = Cursor l c
+moveCursor p@(Cursor l c) ('\r':xs)  = moveCursor p xs
+moveCursor (Cursor l c) ('\n':xs)  = moveCursor (Cursor (l + 1) 1) xs
+moveCursor (Cursor l c) (_:xs)  = moveCursor (Cursor l (c + 1)) xs
 
 
 -- | Valid tokens for Pascal lang.
 -- As defined in res/pascal.g4
 data Token = EOF  -- End of file/input
-           | AND Pos  -- A N D
-           | ARRAY Pos  -- A R R A Y
-           | BEGIN Pos  -- B E G I N
-           | BOOLEAN Pos  -- B O O L E A N
-           | CASE Pos  -- C A S E
-           | CHAR Pos  -- C H A R
-           | CHR Pos  -- C H R
-           | CONST Pos  -- C O N S T
-           | DIV Pos  -- D I V
-           | DO Pos  -- D O
-           | DOWNTO Pos  -- D O W N T O
-           | ELSE Pos  -- E L S E
-           | END Pos  -- E N D
-           | FILE Pos  -- F I L E
-           | FOR Pos  -- F O R
-           | FUNCTION Pos  -- F U N C T I O N
-           | GOTO Pos  -- G O T O
-           | IF Pos  -- I F
-           | IN Pos  -- I N
-           | INTEGER Pos  -- I N T E G E R
-           | LABEL Pos  -- L A B E L
-           | MOD Pos  -- M O D
-           | NIL Pos  -- N I L
-           | NOT Pos  -- N O T
-           | OF Pos  -- O F
-           | OR Pos  -- O R
-           | PACKED Pos  -- P A C K E D
-           | PROCEDURE Pos  -- P R O C E D U R E
-           | PROGRAM Pos  -- P R O G R A M
-           | REAL Pos  -- R E A L
-           | RECORD Pos  -- R E C O R D
-           | REPEAT Pos  -- R E P E A T
-           | SET Pos  -- S E T
-           | THEN Pos  -- T H E N
-           | TO Pos  -- T O
-           | TYPE Pos  -- T Y P E
-           | UNTIL Pos  -- U N T I L
-           | VAR Pos  -- V A R
-           | WHILE Pos  -- W H I L E
-           | WITH Pos  -- W I T H
-           | PLUS Pos  -- '+'
-           | MINUS Pos  -- '-'
-           | STAR Pos  -- '*'
-           | SLASH Pos  -- '/'
-           | ASSIGN Pos  -- ':='
-           | COMMA Pos  -- ','
-           | SEMI Pos  -- ';'
-           | COLON Pos  -- ':'
-           | EQUAL Pos  -- '='
-           | NOT_EQUAL Pos  -- '<>'
-           | LT_ Pos  -- '<'
-           | LE Pos  -- '<='
-           | GE Pos  -- '>='
-           | GT_ Pos  -- '>'
-           | LPAREN Pos  -- '('
-           | RPAREN Pos  -- ')'
-           | LBRACK Pos  -- '['
-           | LBRACK2 Pos  -- '(.'
-           | RBRACK Pos  -- ']'
-           | RBRACK2 Pos  -- '.)'
-           | POINTER Pos  -- '^'
-           | AT Pos  -- '@'
-           | DOT Pos  -- '.'
-           | DOTDOT Pos  -- '..'
-           | LCURLY Pos  -- '{'
-           | RCURLY Pos  -- '}'
-           | UNIT Pos  -- U N I T
-           | INTERFACE Pos  -- I N T E R F A C E
-           | USES Pos  -- U S E S
-           | STRING Pos  -- S T R I N G
-           | IMPLEMENTATION Pos  -- I M P L E M E N T A T I O N
-           | WS Pos String  -- [ \t\r\n] -> skip
-           | COMMENT_1 Pos String  -- '(*' .*? '*)' -> skip
-           | COMMENT_2 Pos String  -- '{' .*? '}' -> skip
-           | IDENT Pos String  -- ('a' .. 'z' | 'A' .. 'Z') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
-           | STRING_LITERAL Pos String  -- '\'' ('\'\'' | ~ ('\''))* '\''
-           | NUM_INT Pos String  -- ('0' .. '9') + (('.' ('0' .. '9') + (EXPONENT)?)? | EXPONENT)
+           | AND Cursor  -- A N D
+           | ARRAY Cursor  -- A R R A Y
+           | BEGIN Cursor  -- B E G I N
+           | BOOLEAN Cursor  -- B O O L E A N
+           | CASE Cursor  -- C A S E
+           | CHAR Cursor  -- C H A R
+           | CHR Cursor  -- C H R
+           | CONST Cursor  -- C O N S T
+           | DIV Cursor  -- D I V
+           | DO Cursor  -- D O
+           | DOWNTO Cursor  -- D O W N T O
+           | ELSE Cursor  -- E L S E
+           | END Cursor  -- E N D
+           | FILE Cursor  -- F I L E
+           | FOR Cursor  -- F O R
+           | FUNCTION Cursor  -- F U N C T I O N
+           | GOTO Cursor  -- G O T O
+           | IF Cursor  -- I F
+           | IN Cursor  -- I N
+           | INTEGER Cursor  -- I N T E G E R
+           | LABEL Cursor  -- L A B E L
+           | MOD Cursor  -- M O D
+           | NIL Cursor  -- N I L
+           | NOT Cursor  -- N O T
+           | OF Cursor  -- O F
+           | OR Cursor  -- O R
+           | PACKED Cursor  -- P A C K E D
+           | PROCEDURE Cursor  -- P R O C E D U R E
+           | PROGRAM Cursor  -- P R O G R A M
+           | REAL Cursor  -- R E A L
+           | RECORD Cursor  -- R E C O R D
+           | REPEAT Cursor  -- R E P E A T
+           | SET Cursor  -- S E T
+           | THEN Cursor  -- T H E N
+           | TO Cursor  -- T O
+           | TYPE Cursor  -- T Y P E
+           | UNTIL Cursor  -- U N T I L
+           | VAR Cursor  -- V A R
+           | WHILE Cursor  -- W H I L E
+           | WITH Cursor  -- W I T H
+           | PLUS Cursor  -- '+'
+           | MINUS Cursor  -- '-'
+           | STAR Cursor  -- '*'
+           | SLASH Cursor  -- '/'
+           | ASSIGN Cursor  -- ':='
+           | COMMA Cursor  -- ','
+           | SEMI Cursor  -- ';'
+           | COLON Cursor  -- ':'
+           | EQUAL Cursor  -- '='
+           | NOT_EQUAL Cursor  -- '<>'
+           | LT_ Cursor  -- '<'
+           | LE Cursor  -- '<='
+           | GE Cursor  -- '>='
+           | GT_ Cursor  -- '>'
+           | LPAREN Cursor  -- '('
+           | RPAREN Cursor  -- ')'
+           | LBRACK Cursor  -- '['
+           | LBRACK2 Cursor  -- '(.'
+           | RBRACK Cursor  -- ']'
+           | RBRACK2 Cursor  -- '.)'
+           | POINTER Cursor  -- '^'
+           | AT Cursor  -- '@'
+           | DOT Cursor  -- '.'
+           | DOTDOT Cursor  -- '..'
+           | LCURLY Cursor  -- '{'
+           | RCURLY Cursor  -- '}'
+           | UNIT Cursor  -- U N I T
+           | INTERFACE Cursor  -- I N T E R F A C E
+           | USES Cursor  -- U S E S
+           | STRING Cursor  -- S T R I N G
+           | IMPLEMENTATION Cursor  -- I M P L E M E N T A T I O N
+           | WS Cursor String  -- [ \t\r\n] -> skip
+           | COMMENT_1 Cursor String  -- '(*' .*? '*)' -> skip
+           | COMMENT_2 Cursor String  -- '{' .*? '}' -> skip
+           | IDENT Cursor String  -- ('a' .. 'z' | 'A' .. 'Z') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
+           | STRING_LITERAL Cursor String  -- '\'' ('\'\'' | ~ ('\''))* '\''
+           | NUM_INT Cursor String  -- ('0' .. '9') + (('.' ('0' .. '9') + (EXPONENT)?)? | EXPONENT)
            deriving (Show, Eq)
 
 
@@ -156,7 +156,7 @@ match_token pattern str = let matched = (str =~+ ("^" ++ pattern, compCaseless +
 
 -- | Produce token, match and rest of the input. Or nothing if no token found.
 -- e.g. "and not" -> (AND, "and", " not")
-nextStaticToken :: [Char] -> Pos -> Maybe (Token, [Char], [Char])
+nextStaticToken :: [Char] -> Cursor -> Maybe (Token, [Char], [Char])
 nextStaticToken (match_token "AND" -> Just (matched, restOfInput)) pos = Just (AND pos, matched, restOfInput)
 nextStaticToken (match_token "ARRAY" -> Just (matched, restOfInput)) pos = Just (ARRAY pos, matched, restOfInput)
 nextStaticToken (match_token "BEGIN" -> Just (matched, restOfInput)) pos = Just (BEGIN pos, matched, restOfInput)
@@ -232,7 +232,7 @@ nextStaticToken _ _ = Nothing
 
 
 -- | Produce dynamic token and the rest of the input.
-nextDynamicToken :: [Char] -> Pos -> Maybe (Token, [Char])
+nextDynamicToken :: [Char] -> Cursor -> Maybe (Token, [Char])
 nextDynamicToken (match_token "\\(\\*(.|\r|\n)+?\\*\\)" -> Just (comment, restOfInput)) pos = Just (COMMENT_1 pos comment, restOfInput)
 nextDynamicToken (match_token "{(.|\r|\n)+?}" -> Just (comment, restOfInput)) pos = Just (COMMENT_2 pos comment, restOfInput)
 nextDynamicToken (match_token "'(''|.)+'" -> Just (str, restOfInput)) pos = Just (STRING_LITERAL pos str, restOfInput)
@@ -246,7 +246,7 @@ nextDynamicToken _ _ = Nothing
 
 -- | Produce next token. Either dynamic or static. And the rest of the input.
 -- Result is Maybe (token, matched input, rest of input)
-nextToken :: [Char] -> Pos -> Maybe (Token, [Char], [Char])
+nextToken :: [Char] -> Cursor -> Maybe (Token, [Char], [Char])
 nextToken input pos = let (staticMatch, dynamicMatch) = (nextStaticToken input pos, nextDynamicToken input pos)
   in case (staticMatch, dynamicMatch) of
     (Nothing, Nothing) -> Nothing
@@ -261,7 +261,7 @@ nextToken input pos = let (staticMatch, dynamicMatch) = (nextStaticToken input p
 -- | Produce list of tokens for an input. Or fail with error.
 tokenize :: [Char] -> [Token]
 tokenize [] = [EOF]
-tokenize input = let tokenFound = nextToken input (Pos 0 0)
+tokenize input = let tokenFound = nextToken input (Cursor 0 0)
   in case tokenFound of
     Nothing -> error ("Can't produce read: " ++ take 20 input)
     Just (token, _, restOfInput) -> [token] ++ tokenize restOfInput
