@@ -28,277 +28,281 @@ main = hspec $ do
 
   describe "tokenize static" $ do
     it "AND" $
-      nextStaticToken "and" `shouldBe` Just (AND, "and", "")
+      nextStaticToken "and" (Pos 0 1) `shouldBe` Just (AND (Pos 0 1), "and", "")
 
     it "ARRAY" $
-      nextStaticToken "array" `shouldBe` Just (ARRAY, "array", "")
+      nextStaticToken "array" (Pos 0 1) `shouldBe` Just (ARRAY (Pos 0 1), "array", "")
 
     it "BEGIN" $
-      nextStaticToken "begin" `shouldBe` Just (BEGIN, "begin", "")
+      nextStaticToken "begin" (Pos 0 1) `shouldBe` Just (BEGIN (Pos 0 1), "begin", "")
 
     it "BOOLEAN" $
-      nextStaticToken "boolean" `shouldBe` Just (BOOLEAN, "boolean", "")
+      nextStaticToken "boolean" (Pos 0 1) `shouldBe` Just (BOOLEAN (Pos 0 1), "boolean", "")
 
     it "CASE" $
-      nextStaticToken "case" `shouldBe` Just (CASE, "case", "")
+      nextStaticToken "case" (Pos 0 1) `shouldBe` Just (CASE (Pos 0 1), "case", "")
 
     it "CHAR" $
-      nextStaticToken "char" `shouldBe` Just (CHAR, "char", "")
+      nextStaticToken "char" (Pos 0 1) `shouldBe` Just (CHAR (Pos 0 1), "char", "")
 
     it "CHR" $
-      nextStaticToken "chr" `shouldBe` Just (CHR, "chr", "")
+      nextStaticToken "chr" (Pos 0 1) `shouldBe` Just (CHR (Pos 0 1), "chr", "")
 
     it "CONST" $
-      nextStaticToken "const" `shouldBe` Just (CONST, "const", "")
+      nextStaticToken "const" (Pos 0 1) `shouldBe` Just (CONST (Pos 0 1), "const", "")
 
     it "DIV" $
-      nextStaticToken "div" `shouldBe` Just (DIV, "div", "")
+      nextStaticToken "div" (Pos 0 1) `shouldBe` Just (DIV (Pos 0 1), "div", "")
 
     it "DO" $
-      nextStaticToken "do" `shouldBe` Just (DO, "do", "")
+      nextStaticToken "do" (Pos 0 1) `shouldBe` Just (DO (Pos 0 1), "do", "")
 
     it "DOWNTO" $
-      nextStaticToken "downto" `shouldBe` Just (DOWNTO, "downto", "")
+      nextStaticToken "downto" (Pos 0 1) `shouldBe` Just (DOWNTO (Pos 0 1), "downto", "")
 
     it "ELSE" $
-      nextStaticToken "else" `shouldBe` Just (ELSE, "else", "")
+      nextStaticToken "else" (Pos 0 1) `shouldBe` Just (ELSE (Pos 0 1), "else", "")
 
     it "END" $
-      nextStaticToken "end" `shouldBe` Just (END, "end", "")
+      nextStaticToken "end" (Pos 0 1) `shouldBe` Just (END (Pos 0 1), "end", "")
 
     it "FILE" $
-      nextStaticToken "file" `shouldBe` Just (FILE, "file", "")
+      nextStaticToken "file" (Pos 0 1) `shouldBe` Just (FILE (Pos 0 1), "file", "")
 
     it "FOR" $
-      nextStaticToken "for" `shouldBe` Just (FOR, "for", "")
+      nextStaticToken "for" (Pos 0 1) `shouldBe` Just (FOR (Pos 0 1), "for", "")
 
     it "FUNCTION" $
-      nextStaticToken "function" `shouldBe` Just (FUNCTION, "function", "")
+      nextStaticToken "function" (Pos 0 1) `shouldBe` Just (FUNCTION (Pos 0 1), "function", "")
 
     it "GOTO" $
-      nextStaticToken "goto" `shouldBe` Just (GOTO, "goto", "")
+      nextStaticToken "goto" (Pos 0 1) `shouldBe` Just (GOTO (Pos 0 1), "goto", "")
 
     it "IF" $
-      nextStaticToken "if" `shouldBe` Just (IF, "if", "")
+      nextStaticToken "if" (Pos 0 1) `shouldBe` Just (IF (Pos 0 1), "if", "")
 
     it "IN" $
-      nextStaticToken "in" `shouldBe` Just (IN, "in", "")
+      nextStaticToken "in" (Pos 0 1) `shouldBe` Just (IN (Pos 0 1), "in", "")
 
     it "INTEGER" $
-      nextStaticToken "integer" `shouldBe` Just (INTEGER, "integer", "")
+      nextStaticToken "integer" (Pos 0 1) `shouldBe` Just (INTEGER (Pos 0 1), "integer", "")
 
     it "LABEL" $
-      nextStaticToken "label" `shouldBe` Just (LABEL, "label", "")
+      nextStaticToken "label" (Pos 0 1) `shouldBe` Just (LABEL (Pos 0 1), "label", "")
 
     it "MOD" $
-      nextStaticToken "mod" `shouldBe` Just (MOD, "mod", "")
+      nextStaticToken "mod" (Pos 0 1) `shouldBe` Just (MOD (Pos 0 1), "mod", "")
 
     it "NIL" $
-      nextStaticToken "nil" `shouldBe` Just (NIL, "nil", "")
+      nextStaticToken "nil" (Pos 0 1) `shouldBe` Just (NIL (Pos 0 1), "nil", "")
 
     it "NOT" $
-      nextStaticToken "not" `shouldBe` Just (NOT, "not", "")
+      nextStaticToken "not" (Pos 0 1) `shouldBe` Just (NOT (Pos 0 1), "not", "")
 
     it "OF" $
-      nextStaticToken "of" `shouldBe` Just (OF, "of", "")
+      nextStaticToken "of" (Pos 0 1) `shouldBe` Just (OF (Pos 0 1), "of", "")
 
     it "OR" $
-      nextStaticToken "or" `shouldBe` Just (OR, "or", "")
+      nextStaticToken "or" (Pos 0 1) `shouldBe` Just (OR (Pos 0 1), "or", "")
 
     it "PACKED" $
-      nextStaticToken "packed" `shouldBe` Just (PACKED, "packed", "")
+      nextStaticToken "packed" (Pos 0 1) `shouldBe` Just (PACKED (Pos 0 1), "packed", "")
 
     it "PROCEDURE" $
-      nextStaticToken "procedure" `shouldBe` Just (PROCEDURE, "procedure", "")
+      nextStaticToken "procedure" (Pos 0 1) `shouldBe` Just (PROCEDURE (Pos 0 1), "procedure", "")
 
     it "PROGRAM" $
-      nextStaticToken "program" `shouldBe` Just (PROGRAM, "program", "")
+      nextStaticToken "program" (Pos 0 1) `shouldBe` Just (PROGRAM (Pos 0 1), "program", "")
 
     it "REAL" $
-      nextStaticToken "real" `shouldBe` Just (REAL, "real", "")
+      nextStaticToken "real" (Pos 0 1) `shouldBe` Just (REAL (Pos 0 1), "real", "")
 
     it "RECORD" $
-      nextStaticToken "record" `shouldBe` Just (RECORD, "record", "")
+      nextStaticToken "record" (Pos 0 1) `shouldBe` Just (RECORD (Pos 0 1), "record", "")
 
     it "REPEAT" $
-      nextStaticToken "repeat" `shouldBe` Just (REPEAT, "repeat", "")
+      nextStaticToken "repeat" (Pos 0 1) `shouldBe` Just (REPEAT (Pos 0 1), "repeat", "")
 
     it "SET" $
-      nextStaticToken "set" `shouldBe` Just (SET, "set", "")
+      nextStaticToken "set" (Pos 0 1) `shouldBe` Just (SET (Pos 0 1), "set", "")
 
     it "THEN" $
-      nextStaticToken "then" `shouldBe` Just (THEN, "then", "")
+      nextStaticToken "then" (Pos 0 1) `shouldBe` Just (THEN (Pos 0 1), "then", "")
 
     it "TO" $
-      nextStaticToken "to" `shouldBe` Just (TO, "to", "")
+      nextStaticToken "to" (Pos 0 1) `shouldBe` Just (TO (Pos 0 1), "to", "")
 
     it "TYPE" $
-      nextStaticToken "type" `shouldBe` Just (TYPE, "type", "")
+      nextStaticToken "type" (Pos 0 1) `shouldBe` Just (TYPE (Pos 0 1), "type", "")
 
     it "UNTIL" $
-      nextStaticToken "until" `shouldBe` Just (UNTIL, "until", "")
+      nextStaticToken "until" (Pos 0 1) `shouldBe` Just (UNTIL (Pos 0 1), "until", "")
 
     it "VAR" $
-      nextStaticToken "var" `shouldBe` Just (VAR, "var", "")
+      nextStaticToken "var" (Pos 0 1) `shouldBe` Just (VAR (Pos 0 1), "var", "")
 
     it "WHILE" $
-      nextStaticToken "while" `shouldBe` Just (WHILE, "while", "")
+      nextStaticToken "while" (Pos 0 1) `shouldBe` Just (WHILE (Pos 0 1), "while", "")
 
     it "WITH" $
-      nextStaticToken "with" `shouldBe` Just (WITH, "with", "")
+      nextStaticToken "with" (Pos 0 1) `shouldBe` Just (WITH (Pos 0 1), "with", "")
 
     it "PLUS" $
-      nextStaticToken "+" `shouldBe` Just (PLUS, "+", "")
+      nextStaticToken "+" (Pos 0 1) `shouldBe` Just (PLUS (Pos 0 1), "+", "")
 
     it "MINUS" $
-      nextStaticToken "-" `shouldBe` Just (MINUS, "-", "")
+      nextStaticToken "-" (Pos 0 1) `shouldBe` Just (MINUS (Pos 0 1), "-", "")
 
     it "STAR" $
-      nextStaticToken "*" `shouldBe` Just (STAR, "*", "")
+      nextStaticToken "*" (Pos 0 1) `shouldBe` Just (STAR (Pos 0 1), "*", "")
 
     it "SLASH" $
-      nextStaticToken "/" `shouldBe` Just (SLASH, "/", "")
+      nextStaticToken "/" (Pos 0 1) `shouldBe` Just (SLASH (Pos 0 1), "/", "")
 
     it "ASSIGN" $
-      nextStaticToken ":=" `shouldBe` Just (ASSIGN, ":=", "")
+      nextStaticToken ":=" (Pos 0 1) `shouldBe` Just (ASSIGN (Pos 0 1), ":=", "")
 
     it "COMMA" $
-      nextStaticToken "," `shouldBe` Just (COMMA, ",", "")
+      nextStaticToken "," (Pos 0 1) `shouldBe` Just (COMMA (Pos 0 1), ",", "")
 
     it "SEMI" $
-      nextStaticToken ";" `shouldBe` Just (SEMI, ";", "")
+      nextStaticToken ";" (Pos 0 1) `shouldBe` Just (SEMI (Pos 0 1), ";", "")
 
     it "COLON" $
-      nextStaticToken ":" `shouldBe` Just (COLON, ":", "")
+      nextStaticToken ":" (Pos 0 1) `shouldBe` Just (COLON (Pos 0 1), ":", "")
 
     it "EQUAL" $
-      nextStaticToken "=" `shouldBe` Just (EQUAL, "=", "")
+      nextStaticToken "=" (Pos 0 1) `shouldBe` Just (EQUAL (Pos 0 1), "=", "")
 
     it "NOT_EQUAL" $
-      nextStaticToken "<>" `shouldBe` Just (NOT_EQUAL, "<>", "")
+      nextStaticToken "<>" (Pos 0 1) `shouldBe` Just (NOT_EQUAL (Pos 0 1), "<>", "")
 
     it "LT" $
-      nextStaticToken "<" `shouldBe` Just (LT_, "<", "")
+      nextStaticToken "<" (Pos 0 1) `shouldBe` Just (LT_ (Pos 0 1), "<", "")
 
     it "LE" $
-      nextStaticToken "<=" `shouldBe` Just (LE, "<=", "")
+      nextStaticToken "<=" (Pos 0 1) `shouldBe` Just (LE (Pos 0 1), "<=", "")
 
     it "GE" $
-      nextStaticToken ">=" `shouldBe` Just (GE, ">=", "")
+      nextStaticToken ">=" (Pos 0 1) `shouldBe` Just (GE (Pos 0 1), ">=", "")
 
     it "GT" $
-      nextStaticToken ">" `shouldBe` Just (GT_, ">", "")
+      nextStaticToken ">" (Pos 0 1) `shouldBe` Just (GT_ (Pos 0 1), ">", "")
 
     it "LPAREN" $
-      nextStaticToken "(" `shouldBe` Just (LPAREN, "(", "")
+      nextStaticToken "(" (Pos 0 1) `shouldBe` Just (LPAREN (Pos 0 1), "(", "")
 
     it "RPAREN" $
-      nextStaticToken ")" `shouldBe` Just (RPAREN, ")", "")
+      nextStaticToken ")" (Pos 0 1) `shouldBe` Just (RPAREN (Pos 0 1), ")", "")
 
     it "LBRACK" $
-      nextStaticToken "[" `shouldBe` Just (LBRACK, "[", "")
+      nextStaticToken "[" (Pos 0 1) `shouldBe` Just (LBRACK (Pos 0 1), "[", "")
 
     it "LBRACK2" $
-      nextStaticToken "(." `shouldBe` Just (LBRACK2, "(.", "")
+      nextStaticToken "(." (Pos 0 1) `shouldBe` Just (LBRACK2 (Pos 0 1), "(.", "")
 
     it "RBRACK" $
-      nextStaticToken "]" `shouldBe` Just (RBRACK, "]", "")
+      nextStaticToken "]" (Pos 0 1) `shouldBe` Just (RBRACK (Pos 0 1), "]", "")
 
     it "RBRACK2" $
-      nextStaticToken ".)" `shouldBe` Just (RBRACK2, ".)", "")
+      nextStaticToken ".)" (Pos 0 1) `shouldBe` Just (RBRACK2 (Pos 0 1), ".)", "")
 
     it "POINTER" $
-      nextStaticToken "^" `shouldBe` Just (POINTER, "^", "")
+      nextStaticToken "^" (Pos 0 1) `shouldBe` Just (POINTER (Pos 0 1), "^", "")
 
     it "AT" $
-      nextStaticToken "@" `shouldBe` Just (AT, "@", "")
+      nextStaticToken "@" (Pos 0 1) `shouldBe` Just (AT (Pos 0 1), "@", "")
 
     it "DOT" $
-      nextStaticToken "." `shouldBe` Just (DOT, ".", "")
+      nextStaticToken "." (Pos 0 1) `shouldBe` Just (DOT (Pos 0 1), ".", "")
 
     it "DOTDOT" $
-      nextStaticToken ".." `shouldBe` Just (DOTDOT, "..", "")
+      nextStaticToken ".." (Pos 0 1) `shouldBe` Just (DOTDOT (Pos 0 1), "..", "")
 
     it "LCURLY" $
-      nextStaticToken "{" `shouldBe` Just (LCURLY, "{", "")
+      nextStaticToken "{" (Pos 0 1) `shouldBe` Just (LCURLY (Pos 0 1), "{", "")
 
     it "RCURLY" $
-      nextStaticToken "}" `shouldBe` Just (RCURLY, "}", "")
+      nextStaticToken "}" (Pos 0 1) `shouldBe` Just (RCURLY (Pos 0 1), "}", "")
 
     it "UNIT" $
-      nextStaticToken "unit" `shouldBe` Just (UNIT, "unit", "")
+      nextStaticToken "unit" (Pos 0 1) `shouldBe` Just (UNIT (Pos 0 1), "unit", "")
 
     it "INTERFACE" $
-      nextStaticToken "interface" `shouldBe` Just (INTERFACE, "interface", "")
+      nextStaticToken "interface" (Pos 0 1) `shouldBe` Just (INTERFACE (Pos 0 1), "interface", "")
 
     it "USES" $
-      nextStaticToken "uses" `shouldBe` Just (USES, "uses", "")
+      nextStaticToken "uses" (Pos 0 1) `shouldBe` Just (USES (Pos 0 1), "uses", "")
 
     it "STRING" $
-      nextStaticToken "string" `shouldBe` Just (STRING, "string", "")
+      nextStaticToken "string" (Pos 0 1) `shouldBe` Just (STRING (Pos 0 1), "string", "")
 
     it "IMPLEMENTATION" $
-      nextStaticToken "implementation" `shouldBe` Just (IMPLEMENTATION, "implementation", "")
+      nextStaticToken "implementation" (Pos 0 1) `shouldBe` Just (IMPLEMENTATION (Pos 0 1), "implementation", "")
 
   describe "tokenize dynamic" $ do
     it "WS" $
-      nextDynamicToken "  \t  \r\n " `shouldBe` Just (WS "  \t  \r\n ", "")
+      nextDynamicToken "  \t  \r\n " (Pos 0 1) `shouldBe` Just (WS (Pos 0 1) "  \t  \r\n ", "")
 
     it "Comment1 single line" $
-      nextDynamicToken "(*some comment*)" `shouldBe` Just (COMMENT_1 "(*some comment*)", "")
+      nextDynamicToken "(*some comment*)" (Pos 0 1) `shouldBe` Just (COMMENT_1 (Pos 0 1) "(*some comment*)", "")
 
     it "Comment1 multiple lines" $
-      nextDynamicToken "(*some\ncomment*)" `shouldBe` Just (COMMENT_1 "(*some\ncomment*)", "")
+      nextDynamicToken "(*some\ncomment*)" (Pos 0 1) `shouldBe` Just (COMMENT_1 (Pos 0 1) "(*some\ncomment*)", "")
 
     it "Comment2 single line" $
-      nextDynamicToken "{some comment}" `shouldBe` Just (COMMENT_2 "{some comment}", "")
+      nextDynamicToken "{some comment}" (Pos 0 1) `shouldBe` Just (COMMENT_2 (Pos 0 1) "{some comment}", "")
 
     it "Comment2 multiple lines" $
-      nextDynamicToken "{some\ncomment}" `shouldBe` Just (COMMENT_2 "{some\ncomment}", "")
+      nextDynamicToken "{some\ncomment}" (Pos 0 1) `shouldBe` Just (COMMENT_2 (Pos 0 1) "{some\ncomment}", "")
 
     it "STRING_LITERAL str" $
-      nextDynamicToken "'str'" `shouldBe` Just (STRING_LITERAL "'str'", "")
+      nextDynamicToken "'str'" (Pos 0 1) `shouldBe` Just (STRING_LITERAL (Pos 0 1) "'str'", "")
 
     it "STRING_LITERAL empty" $
-      nextDynamicToken "''" `shouldBe` Just (STRING_LITERAL "''", "")
+      nextDynamicToken "''" (Pos 0 1) `shouldBe` Just (STRING_LITERAL (Pos 0 1) "''", "")
 
     it "STRING_LITERAL with ' inside'" $
-      nextDynamicToken "'abc''cba'" `shouldBe` Just (STRING_LITERAL "'abc''cba'", "")
+      nextDynamicToken "'abc''cba'" (Pos 0 1) `shouldBe` Just (STRING_LITERAL (Pos 0 1) "'abc''cba'", "")
 
     it "NUM_INT 123" $
-      nextDynamicToken "123" `shouldBe` Just (NUM_INT "123", "")
+      nextDynamicToken "123" (Pos 0 1) `shouldBe` Just (NUM_INT (Pos 0 1) "123", "")
 
     it "NUM_INT 123.34" $
-      nextDynamicToken "123.34" `shouldBe` Just (NUM_INT "123.34", "")
+      nextDynamicToken "123.34" (Pos 0 1) `shouldBe` Just (NUM_INT (Pos 0 1) "123.34", "")
 
     it "NUM_INT 123e-34" $
-      nextDynamicToken "123e-34" `shouldBe` Just (NUM_INT "123e-34", "")
+      nextDynamicToken "123e-34" (Pos 0 1) `shouldBe` Just (NUM_INT (Pos 0 1) "123e-34", "")
 
     it "NUM_INT 123.45e56" $
-      nextDynamicToken "123.45e56" `shouldBe` Just (NUM_INT "123.45e56", "")
+      nextDynamicToken "123.45e56" (Pos 0 1) `shouldBe` Just (NUM_INT (Pos 0 1) "123.45e56", "")
 
     it "IDENT x" $
-      nextDynamicToken "x" `shouldBe` Just (IDENT "x", "")
+      nextDynamicToken "x" (Pos 0 1) `shouldBe` Just (IDENT (Pos 0 1) "x", "")
 
     it "IDENT xA9_u" $
-      nextDynamicToken "xA9_u" `shouldBe` Just (IDENT "xA9_u", "")
+      nextDynamicToken "xA9_u" (Pos 0 1) `shouldBe` Just (IDENT (Pos 0 1) "xA9_u", "")
 
     it "IDENT Abc1" $
-      nextDynamicToken "Abc1" `shouldBe` Just (IDENT "Abc1", "")
+      nextDynamicToken "Abc1" (Pos 0 1) `shouldBe` Just (IDENT (Pos 0 1) "Abc1", "")
 
   describe "nextToken" $ do
     it "IDEN wins" $
-      nextToken "ANDi" `shouldBe` Just (IDENT "ANDi", "ANDi", "")
+      nextToken "ANDi" (Pos 0 1) `shouldBe` Just (IDENT (Pos 0 1) "ANDi", "ANDi", "")
 
     it "AND wins" $
-      nextToken "AND" `shouldBe` Just (AND, "AND", "")
+      nextToken "AND" (Pos 0 1) `shouldBe` Just (AND (Pos 0 1), "AND", "")
 
   describe "tokenize input to list" $ do
     it "empty" $
       tokenize "" `shouldBe` [EOF]
 
     it "expression" $
-      tokenize "if x<y then a:=45" `shouldBe` [IF, WS " ", IDENT "x", LT_,IDENT "y",WS " ", THEN, WS " ", IDENT "a", ASSIGN, NUM_INT "45", EOF]
+      tokenize "if x<y then a:=45" `shouldBe` [
+        IF  (Pos 0 0), WS (Pos 0 0) " ",
+        IDENT (Pos 0 0) "x", LT_ (Pos 0 0),IDENT (Pos 0 0) "y",WS (Pos 0 0) " ",
+        THEN (Pos 0 0), WS (Pos 0 0) " ",
+        IDENT (Pos 0 0) "a", ASSIGN (Pos 0 0), NUM_INT (Pos 0 0) "45", EOF]
 
   describe "tokenize samples" $ do
     it "subscripts.pas" $ do
