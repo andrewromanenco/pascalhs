@@ -9,6 +9,25 @@ import Data.Maybe
 import Text.Regex.PCRE
 
 
+-- | Position in input text; line and column.
+data Pos = Pos Int Int
+
+
+-- | Show for Pos.
+instance Show Pos where
+  show (Pos a b) = "Line: " ++ (show a) ++ ", Col: " ++ (show b)
+
+
+-- | Get line number from a position.
+lineNumber :: Pos -> Int
+lineNumber (Pos n _) = n
+
+
+-- | Get Column number from a position.
+column :: Pos -> Int
+column (Pos _ n) = n
+
+
 -- | Valid tokens for Pascal lang.
 -- As defined in res/pascal.g4
 data Token = EOF  -- End of file/input

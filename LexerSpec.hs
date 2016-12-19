@@ -5,6 +5,13 @@ import Lexer
 
 main :: IO ()
 main = hspec $ do
+  describe "position in text" $ do
+    it "line number" $
+      lineNumber (Pos 1 2) `shouldBe` 1
+
+    it "column number" $
+      column (Pos 1 2) `shouldBe` 2
+
   describe "stripExistingPrefix" $ do
     it "curs off existing prefix" $
       stripExistingPrefix "pre" "prefix" `shouldBe` "fix"
