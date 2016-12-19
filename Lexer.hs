@@ -16,5 +16,14 @@ _tokenize :: [Char] -> Cursor -> [Token]
 _tokenize [] _ = [EOF]
 _tokenize input cur = let tokenFound = nextToken input cur
   in case tokenFound of
-    Nothing -> error ("Can't produce read: " ++ take 20 input)
+    Nothing -> error (errMsg input cur)
     Just (token, matched, restOfInput) -> [token] ++ _tokenize restOfInput (moveCursor cur matched)
+
+
+-- | Format nice error message.
+errMsg restOfInput cursor = "Can't read at line/col [" ++
+                            show (lineNumber cursor) ++
+                            ", " ++
+                            show (column cursor) ++
+                            "] -> " ++
+                            take 20 restOfInput
