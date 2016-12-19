@@ -201,4 +201,5 @@ nextDynamicToken (match_token "''" -> Just (str, restOfInput)) = Just (STRING_LI
 nextDynamicToken (match_token "\\d+\\.\\d+(e(\\+|-)?\\d+)?" -> Just (num, restOfInput)) = Just (NUM_INT  num, restOfInput)
 nextDynamicToken (match_token "\\d+(e(\\+|\\-)?\\d+)?" -> Just (num, restOfInput)) = Just (NUM_INT  num, restOfInput)
 nextDynamicToken (match_token "[ \t\r\n]+" -> Just (ws, restOfInput)) = Just (WS ws, restOfInput)
+nextDynamicToken (match_token "[a-z]([a-z]|[0-9]|_)*" -> Just (ident, restOfInput)) = Just (IDENT ident, restOfInput)
 nextDynamicToken _ = Nothing

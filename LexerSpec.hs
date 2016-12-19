@@ -269,3 +269,12 @@ main = hspec $ do
 
     it "NUM_INT 123.45e56" $
       nextDynamicToken "123.45e56" `shouldBe` Just (NUM_INT "123.45e56", "")
+
+    it "IDENT x" $
+      nextDynamicToken "x" `shouldBe` Just (IDENT "x", "")
+
+    it "IDENT xA9_u" $
+      nextDynamicToken "xA9_u" `shouldBe` Just (IDENT "xA9_u", "")
+
+    it "IDENT Abc1" $
+      nextDynamicToken "Abc1" `shouldBe` Just (IDENT "Abc1", "")
