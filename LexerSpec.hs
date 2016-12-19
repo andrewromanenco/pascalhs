@@ -232,3 +232,40 @@ main = hspec $ do
 
     it "IMPLEMENTATION" $
       nextStaticToken "implementation" `shouldBe` Just (IMPLEMENTATION, "implementation", "")
+
+  describe "tokenize dynamic" $ do
+    it "WS" $
+      nextDynamicToken "  \t  \r\n " `shouldBe` Just (WS "  \t  \r\n ", "")
+
+    it "Comment1 single line" $
+      nextDynamicToken "(*some comment*)" `shouldBe` Just (COMMENT_1 "(*some comment*)", "")
+
+    it "Comment1 multiple lines" $
+      nextDynamicToken "(*some\ncomment*)" `shouldBe` Just (COMMENT_1 "(*some\ncomment*)", "")
+
+    it "Comment2 single line" $
+      nextDynamicToken "{some comment}" `shouldBe` Just (COMMENT_2 "{some comment}", "")
+
+    it "Comment2 multiple lines" $
+      nextDynamicToken "{some\ncomment}" `shouldBe` Just (COMMENT_2 "{some\ncomment}", "")
+
+    it "STRING_LITERAL str" $
+      nextDynamicToken "'str'" `shouldBe` Just (STRING_LITERAL "'str'", "")
+
+    it "STRING_LITERAL empty" $
+      nextDynamicToken "''" `shouldBe` Just (STRING_LITERAL "''", "")
+
+    it "STRING_LITERAL with ' inside'" $
+      nextDynamicToken "'abc''cba'" `shouldBe` Just (STRING_LITERAL "'abc''cba'", "")
+
+    it "NUM_INT 123" $
+      nextDynamicToken "123" `shouldBe` Just (NUM_INT "123", "")
+
+    it "NUM_INT 123.34" $
+      nextDynamicToken "123.34" `shouldBe` Just (NUM_INT "123.34", "")
+
+    it "NUM_INT 123e-34" $
+      nextDynamicToken "123e-34" `shouldBe` Just (NUM_INT "123e-34", "")
+
+    it "NUM_INT 123.45e56" $
+      nextDynamicToken "123.45e56" `shouldBe` Just (NUM_INT "123.45e56", "")

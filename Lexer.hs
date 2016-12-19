@@ -190,3 +190,15 @@ nextStaticToken (match_token "USES" -> Just (matched, restOfInput)) = Just (USES
 nextStaticToken (match_token "STRING" -> Just (matched, restOfInput)) = Just (STRING, matched, restOfInput)
 nextStaticToken (match_token "IMPLEMENTATION" -> Just (matched, restOfInput)) = Just (IMPLEMENTATION, matched, restOfInput)
 nextStaticToken _ = Nothing
+
+
+-- | Produce dynamic token and the rest of the input.
+nextDynamicToken :: [Char] -> Maybe (Token, [Char])
+nextDynamicToken (match_token "\\(\\*(.|\r|\n)+?\\*\\)" -> Just (comment, restOfInput)) = Just (COMMENT_1 comment, restOfInput)
+nextDynamicToken (match_token "{(.|\r|\n)+?}" -> Just (comment, restOfInput)) = Just (COMMENT_2 comment, restOfInput)
+nextDynamicToken (match_token "'(''|.)+'" -> Just (str, restOfInput)) = Just (STRING_LITERAL str, restOfInput)
+nextDynamicToken (match_token "''" -> Just (str, restOfInput)) = Just (STRING_LITERAL str, restOfInput)
+nextDynamicToken (match_token "\\d+\\.\\d+(e(\\+|-)?\\d+)?" -> Just (num, restOfInput)) = Just (NUM_INT  num, restOfInput)
+nextDynamicToken (match_token "\\d+(e(\\+|\\-)?\\d+)?" -> Just (num, restOfInput)) = Just (NUM_INT  num, restOfInput)
+nextDynamicToken (match_token "[ \t\r\n]+" -> Just (ws, restOfInput)) = Just (WS ws, restOfInput)
+nextDynamicToken _ = Nothing
