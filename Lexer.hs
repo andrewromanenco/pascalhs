@@ -125,6 +125,7 @@ match_token pattern str = let matched = (str =~+ ("^" ++ pattern, compCaseless +
    then Nothing
    else Just (matched, stripExistingPrefix matched str)
 
+
 -- | Produce token, match and rest of the input. Or nothing if no token found.
 -- e.g. "and not" -> (AND, "and", " not")
 nextStaticToken :: [Char] -> Maybe (Token, [Char], [Char])
@@ -223,7 +224,7 @@ tokenize input = let (staticMatch, dynamicMatch) = (nextStaticToken input, nextD
     (Nothing, Nothing) -> error ("Can't produce read: " ++ take 20 input)
     (Nothing, Just (token, restOfInput)) -> [token] ++ tokenize restOfInput
     (Just (token, _, restOfInput), Nothing) -> [token] ++ tokenize restOfInput
-    (Just (stoken, smatch, srestOfInput), Just (dtoken, drestOfInput)) -> if length smatch < length (tokenValue dtoken)
-                                                                        then [dtoken] ++ tokenize drestOfInput
-                                                                        else [stoken] ++ tokenize srestOfInput
--- tokenize s@_ = error ("Can't produce read: " ++ take 20 s)
+    (Just (stoken, smatch, srestOfInput), Just (dtoken, drestOfInput)) ->
+      if length smatch < length (tokenValue dtoken)
+        then [dtoken] ++ tokenize drestOfInput
+        else [stoken] ++ tokenize srestOfInput
