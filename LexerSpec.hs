@@ -12,6 +12,22 @@ main = hspec $ do
     it "column number" $
       column (Pos 1 2) `shouldBe` 2
 
+  describe "move position" $ do
+    it "no move on empty" $
+      moveCursor (Pos 1 2) "" `shouldBe` Pos 1 2
+
+    it "move left" $
+      moveCursor (Pos 1 2) "abc" `shouldBe` Pos 1 5
+
+    it "move left ignoring \\r" $
+      moveCursor (Pos 1 2) "a\rt" `shouldBe` Pos 1 4
+
+    it "move left and down" $
+      moveCursor (Pos 1 2) "abc\n" `shouldBe` Pos 2 1
+
+    it "move left down left" $
+      moveCursor (Pos 1 2) "abc\nabc" `shouldBe` Pos 2 4
+
   describe "stripExistingPrefix" $ do
     it "curs off existing prefix" $
       stripExistingPrefix "pre" "prefix" `shouldBe` "fix"

@@ -29,6 +29,14 @@ column :: Pos -> Int
 column (Pos _ n) = n
 
 
+-- | Moves cursor forward to new position.
+moveCursor :: Pos -> [Char] -> Pos
+moveCursor (Pos l c) []  = Pos l c
+moveCursor p@(Pos l c) ('\r':xs)  = moveCursor p xs
+moveCursor (Pos l c) ('\n':xs)  = moveCursor (Pos (l + 1) 1) xs
+moveCursor (Pos l c) (_:xs)  = moveCursor (Pos l (c + 1)) xs
+
+
 -- | Valid tokens for Pascal lang.
 -- As defined in res/pascal.g4
 data Token = EOF  -- End of file/input
