@@ -286,6 +286,13 @@ main = hspec $ do
     it "IDENT Abc1" $
       nextDynamicToken "Abc1" `shouldBe` Just (IDENT "Abc1", "")
 
+  describe "nextToken" $ do
+    it "IDEN wins" $
+      nextToken "ANDi" `shouldBe` Just (IDENT "ANDi", "ANDi", "")
+
+    it "AND wins" $
+      nextToken "AND" `shouldBe` Just (AND, "AND", "")
+
   describe "tokenize input to list" $ do
     it "empty" $
       tokenize "" `shouldBe` [EOF]

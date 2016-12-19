@@ -235,15 +235,24 @@ nextDynamicToken (match_token "[a-z]([a-z]|[0-9]|_)*" -> Just (ident, restOfInpu
 nextDynamicToken _ = Nothing
 
 
+-- | Produce next token. Either dynamic or static. And the rest of the input.
+-- Result is Maybe (token, matched input, rest of input)
+nextToken :: [Char] -> Maybe (Token, [Char], [Char])
+nextToken input = let (staticMatch, dynamicMatch) = (nextStaticToken input, nextDynamicToken input)
+  in case (staticMatch, dynamicMatch) of
+    (Nothing, Nothing) -> Nothing
+    (Nothing, Just (token, restOfInput)) -> Just (token, tokenValue token, restOfInput)
+    (Just (token, match, restOfInput), Nothing) -> Just (token, match, restOfInput)
+    (Just (stoken, smatch, srestOfInput), Just (dtoken, drestOfInput)) ->
+      if length smatch < length (tokenValue dtoken)
+        then Just (dtoken, tokenValue dtoken, drestOfInput)
+        else Just (stoken, smatch, srestOfInput)
+
+
 -- | Produce list of tokens for an input. Or fail with error.
 tokenize :: [Char] -> [Token]
 tokenize [] = [EOF]
-tokenize input = let (staticMatch, dynamicMatch) = (nextStaticToken input, nextDynamicToken input)
-  in case (staticMatch, dynamicMatch) of
-    (Nothing, Nothing) -> error ("Can't produce read: " ++ take 20 input)
-    (Nothing, Just (token, restOfInput)) -> [token] ++ tokenize restOfInput
-    (Just (token, _, restOfInput), Nothing) -> [token] ++ tokenize restOfInput
-    (Just (stoken, smatch, srestOfInput), Just (dtoken, drestOfInput)) ->
-      if length smatch < length (tokenValue dtoken)
-        then [dtoken] ++ tokenize drestOfInput
-        else [stoken] ++ tokenize srestOfInput
+tokenize input = let tokenFound = nextToken input
+  in case tokenFound of
+    Nothing -> error ("Can't produce read: " ++ take 20 input)
+    Just (token, _, restOfInput) -> [token] ++ tokenize restOfInput
