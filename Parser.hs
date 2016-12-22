@@ -15,8 +15,11 @@ data ProgramHeading = ProgramHeading String (Maybe IdentifierList)
                     | UnitHeading String
                     deriving(Show, Eq)
 
-data Block = Block  -- wip
+data Block = Block
            deriving(Show, Eq)
+
+data CompoundStatement = CompoundStatement
+                       deriving(Show, Eq)
 
 data IdentifierList = IdentifierList [String]
                     deriving (Show, Eq)
@@ -46,7 +49,7 @@ parseProgram :: [Token] -> Maybe (Program, [Token])
 parseProgram input = let (pHead, restOfInput) = mustBe "Program or Unit" input parseProgramHeading
   in let (interfaceFlag,deepRest) = maybeToken "INTERFACE" restOfInput
     in let (block, deepestRest) = mustBe "Block" deepRest parseBlock
-      in Just (Program pHead interfaceFlag block, deepestRest)
+      in Just (Program pHead interfaceFlag block, mustBeToken "DOT" deepestRest)
 
 
 parseProgramHeading :: [Token] -> Maybe (ProgramHeading, [Token])
@@ -59,9 +62,19 @@ parseProgramHeading (PROGRAM _: restOfInput) = let (name, rest) = parseIdentifie
     otherwise -> Just (ProgramHeading name Nothing, semiExpected rest)
 parseProgramHeading (x:_) = Nothing
 
-parseBlock :: [Token] -> Maybe (Block, [Token])
-parseBlock input = Just (Block, input)
 
+          -- block
+          --    : (labelDeclarationPart | constantDefinitionPart | typeDefinitionPart | variableDeclarationPart | procedureAndFunctionDeclarationPart | usesUnitsPart | IMPLEMENTATION)* compoundStatement
+          --    ;
+parseBlock :: [Token] -> Maybe (Block, [Token])
+parseBlock input = let (cStatement, restOfInput) = mustBe "BEGIN block" input parseCompoundStatement
+  in Just(Block, restOfInput)
+
+          -- compoundStatement
+          --    : BEGIN statements END
+          --    ;
+parseCompoundStatement :: [Token] -> Maybe (CompoundStatement, [Token])
+parseCompoundStatement input = Just (CompoundStatement, mustBeToken "END" (mustBeToken "BEGIN" input))
 
 parseIdentifierList :: [Token] -> (IdentifierList, [Token])
 parseIdentifierList input@(IDENT _ _:_) = let (name, restOfInput) = parseIdentifier input
@@ -108,6 +121,12 @@ maybeToken :: [Char] -> [Token] -> (Bool, [Token])
 maybeToken name inp@(x:restOfInput) = if name == tokenName x
   then (True, restOfInput)
   else (False, inp)
+
+
+mustBeToken :: [Char] -> [Token] -> [Token]
+mustBeToken name inp@(t:restOfInput) = if name == tokenName t
+  then restOfInput
+  else tokenExpectationError name (head inp)
 
 
 tokenExpectationError :: String -> Token -> b
