@@ -15,11 +15,17 @@ data ProgramHeading = ProgramHeading String (Maybe IdentifierList)
                     | UnitHeading String
                     deriving(Show, Eq)
 
-data Block = Block
+data Block = Block CompoundStatement
            deriving(Show, Eq)
 
-data CompoundStatement = CompoundStatement
+data CompoundStatement = CompoundStatement Statements
                        deriving(Show, Eq)
+
+data Statements = Statements [Statement]
+              deriving (Show, Eq)
+
+data Statement = Statement
+              deriving (Show, Eq)
 
 data IdentifierList = IdentifierList [String]
                     deriving (Show, Eq)
@@ -68,13 +74,17 @@ parseProgramHeading (x:_) = Nothing
           --    ;
 parseBlock :: [Token] -> Maybe (Block, [Token])
 parseBlock input = let (cStatement, restOfInput) = mustBe "BEGIN block" input parseCompoundStatement
-  in Just(Block, restOfInput)
+  in Just(Block cStatement, restOfInput)
 
           -- compoundStatement
           --    : BEGIN statements END
           --    ;
 parseCompoundStatement :: [Token] -> Maybe (CompoundStatement, [Token])
-parseCompoundStatement input = Just (CompoundStatement, mustBeToken "END" (mustBeToken "BEGIN" input))
+parseCompoundStatement input = let (statements, restOfInput) = mustBe "Statement" (mustBeToken "BEGIN" input) parseStatements
+  in Just (CompoundStatement statements, mustBeToken "END" restOfInput)
+
+parseStatements :: [Token] -> Maybe (Statements, [Token])
+parseStatements input = Just (Statements[], input)
 
 parseIdentifierList :: [Token] -> (IdentifierList, [Token])
 parseIdentifierList input@(IDENT _ _:_) = let (name, restOfInput) = parseIdentifier input
