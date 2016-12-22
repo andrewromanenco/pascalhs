@@ -7,6 +7,11 @@ import LexerTokens
 main :: IO ()
 c = Cursor 3 4
 main = hspec $ do
+  describe "util functions" $ do
+    it "filter out comments and ws" $ do
+      filterOut [COMMA c, WS c "", SEMI c, COMMENT_1 c "", COMMENT_2 c "", EOF] `shouldBe`
+        [COMMA c, SEMI c, EOF]
+
   describe "parse elements" $ do
     it "identifier" $ do
       parseIdentifier [IDENT c "name", EOF] `shouldBe` ("name", [EOF])
@@ -20,8 +25,12 @@ main = hspec $ do
 
     it "program heading: program" $
       parseProgramHeading [PROGRAM c, IDENT c "name", SEMI c]
-        `shouldBe` (ProgramHeading "name" Nothing, [])
+        `shouldBe` Just (ProgramHeading "name" Nothing, [])
 
     it "program heading: program with id list" $
       parseProgramHeading [PROGRAM c, IDENT c "name", LPAREN c, IDENT c "var", RPAREN c, SEMI c]
-        `shouldBe` (ProgramHeading "name" (Just( IdentifierList ["var"])), [])
+        `shouldBe` Just (ProgramHeading "name" (Just( IdentifierList ["var"])), [])
+
+    it "program heading: unit" $
+      parseProgramHeading [UNIT c, IDENT c "name", SEMI c]
+        `shouldBe` Just (UnitHeading "name", [])
