@@ -136,4 +136,4 @@ mustBeToken name inp@(t:restOfInput) = if name == tokenName t
 tokenExpectationError :: String -> Token -> b
 tokenExpectationError tokenNameExpected token = case token of
   EOF -> error (tokenNameExpected ++ " expected but end of file reached")
-  otherwise -> error (tokenNameExpected ++" expected at "++ show(cursorValue(token)) ++ ", but it's " ++ (tokenName token))
+  otherwise -> error (tokenNameExpected ++" expected at "++ show(cursorValue(token)) ++ ", but it's " ++ (show token))
