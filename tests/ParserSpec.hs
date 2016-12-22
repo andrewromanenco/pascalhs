@@ -30,11 +30,11 @@ main = hspec $ do
       parseIdentifier [IDENT c "name", EOF] `shouldBe` ("name", [EOF])
 
     it "IdentifierList single" $ do
-      parseIdentifierList [IDENT c "name", EOF] `shouldBe` (IdentifierList ["name"], [EOF])
+      parseIdentifierList [IDENT c "name", EOF] `shouldBe` (["name"], [EOF])
 
     it "IdentifierList multiple" $ do
       parseIdentifierList [IDENT c "name1", COMMA c, IDENT c "name2", COMMA c, IDENT c "name3", EOF]
-        `shouldBe` (IdentifierList ["name1", "name2", "name3"], [EOF])
+        `shouldBe` (["name1", "name2", "name3"], [EOF])
 
     it "program heading: program" $
       parseProgramHeading [PROGRAM c, IDENT c "name", SEMI c]
@@ -42,7 +42,7 @@ main = hspec $ do
 
     it "program heading: program with id list" $
       parseProgramHeading [PROGRAM c, IDENT c "name", LPAREN c, IDENT c "var", RPAREN c, SEMI c]
-        `shouldBe` Just (ProgramHeading "name" (Just( IdentifierList ["var"])), [])
+        `shouldBe` Just (ProgramHeading "name" (Just ["var"]), [])
 
     it "program heading: unit" $
       parseProgramHeading [UNIT c, IDENT c "name", SEMI c]

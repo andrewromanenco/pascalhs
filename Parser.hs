@@ -27,15 +27,7 @@ data Statements = Statements [Statement]
 data Statement = Statement
               deriving (Show, Eq)
 
-data IdentifierList = IdentifierList [String]
-                    deriving (Show, Eq)
-
-idList :: IdentifierList -> [String]
-idList (IdentifierList values) = values
-
-idListPrepend :: String -> IdentifierList -> IdentifierList
-idListPrepend name lst = IdentifierList ([name] ++ idList lst)
-
+type IdentifierList = [String]
 
 -- | Parse a program.
 parse :: [Token] -> Program
@@ -90,8 +82,8 @@ parseIdentifierList :: [Token] -> (IdentifierList, [Token])
 parseIdentifierList input@(IDENT _ _:_) = let (name, restOfInput) = parseIdentifier input
   in case head restOfInput of
     COMMA _ -> let (list, rest) = parseIdentifierList(tail restOfInput)
-               in (idListPrepend name list, rest)
-    otherwise -> (IdentifierList [name], restOfInput)
+               in ([name] ++ list, rest)
+    otherwise -> ([name], restOfInput)
 parseIdentifierList (x:_) = tokenExpectationError "Identifier" x
 
 
