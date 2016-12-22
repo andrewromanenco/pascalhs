@@ -12,6 +12,19 @@ main = hspec $ do
       filterOut [COMMA c, WS c "", SEMI c, COMMENT_1 c "", COMMENT_2 c "", EOF] `shouldBe`
         [COMMA c, SEMI c, EOF]
 
+    it "maybeToken with match" $ do
+      maybeToken "COMMA" [COMMA c, EOF] `shouldBe` (True, [EOF])
+
+    it "maybeToken no match" $ do
+      maybeToken "COMMA" [EOF] `shouldBe` (False, [EOF])
+
+    it "mustBe good" $ do
+      mustBe "Msg" [COMMA c, EOF] (\x -> Just ("COMMA", [EOF])) `shouldBe` ("COMMA", [EOF])
+
+    -- TODO
+    -- it "mustBe bad" $ do
+    --   mustBe "Msg" [COMMA c, EOF] (\x -> Nothing) `shouldBe` ("COMMA", [EOF])
+
   describe "parse elements" $ do
     it "identifier" $ do
       parseIdentifier [IDENT c "name", EOF] `shouldBe` ("name", [EOF])

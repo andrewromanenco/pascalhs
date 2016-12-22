@@ -97,7 +97,7 @@ filterOut (t:restOfInput) = [t] ++ filterOut restOfInput
 filterOut [] = []
 
 
-mustBe :: String -> [Token ] -> ([Token] -> Maybe (a, [Token])) -> (a, [Token])
+mustBe :: String -> [Token] -> ([Token] -> Maybe (a, [Token])) -> (a, [Token])
 mustBe what input f = let r = f input
   in case r of
     Nothing -> tokenExpectationError what (head input)
