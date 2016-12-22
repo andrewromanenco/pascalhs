@@ -21,12 +21,11 @@ data Block = Block CompoundStatement
 data CompoundStatement = CompoundStatement Statements
                        deriving(Show, Eq)
 
-data Statements = Statements [Statement]
-              deriving (Show, Eq)
 
 data Statement = Statement
               deriving (Show, Eq)
 
+type Statements = [Statement]
 type IdentifierList = [String]
 
 -- | Parse a program.
@@ -76,7 +75,7 @@ parseCompoundStatement input = let (statements, restOfInput) = mustBe "Statement
   in Just (CompoundStatement statements, mustBeToken "END" restOfInput)
 
 parseStatements :: [Token] -> Maybe (Statements, [Token])
-parseStatements input = Just (Statements[], input)
+parseStatements input = Just ([], input)
 
 parseIdentifierList :: [Token] -> (IdentifierList, [Token])
 parseIdentifierList input@(IDENT _ _:_) = let (name, restOfInput) = parseIdentifier input
