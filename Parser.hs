@@ -67,6 +67,7 @@ parseBlock :: [Token] -> Maybe (Block, [Token])
 parseBlock input = let (cStatement, restOfInput) = mustBe "BEGIN block" input parseCompoundStatement
   in Just(Block cStatement, restOfInput)
 
+
           -- compoundStatement
           --    : BEGIN statements END
           --    ;
@@ -74,8 +75,10 @@ parseCompoundStatement :: [Token] -> Maybe (CompoundStatement, [Token])
 parseCompoundStatement input = let (statements, restOfInput) = mustBe "Statement" (mustBeToken "BEGIN" input) parseStatements
   in Just (CompoundStatement statements, mustBeToken "END" restOfInput)
 
+
 parseStatements :: [Token] -> Maybe (Statements, [Token])
 parseStatements input = Just ([], input)
+
 
 parseIdentifierList :: [Token] -> (IdentifierList, [Token])
 parseIdentifierList input@(IDENT _ _:_) = let (name, restOfInput) = parseIdentifier input
