@@ -22,7 +22,10 @@ data CompoundStatement = CompoundStatement Statements
                        deriving(Show, Eq)
 
 
-data Statement = ProcedureStatement String
+data Statement = ProcedureStatement String [Parameter]  -- name and params
+              deriving (Show, Eq)
+
+data Parameter = StringParameter String
               deriving (Show, Eq)
 
 type Statements = [Statement]
@@ -117,7 +120,18 @@ parseSimpleStatement input = parseProcedureStatement input
         --    ;
 parseProcedureStatement :: [Token] -> Maybe (Statement, [Token])
 parseProcedureStatement input = let (name, restOfInput) = mustBe "Identifier" input parseIdentifier
-  in Just(ProcedureStatement name, restOfInput)
+  in case restOfInput of
+    (LPAREN _:other) -> let (pList, deepRest) = mustBe "Parameter" other parseParameterList
+      in Just (ProcedureStatement name pList, mustBeToken "RPAREN" deepRest)
+    otherwise -> Just(ProcedureStatement name [], restOfInput)
+
+
+        -- parameterList
+        --    : actualParameter (COMMA actualParameter)*
+        --    ;
+parseParameterList :: [Token] -> Maybe ([Parameter], [Token])
+parseParameterList (STRING_LITERAL _ value: restOfInput) = Just ([StringParameter value], restOfInput)
+parseParameterList input = Nothing
 
 
 parseIdentifierList :: [Token] -> (IdentifierList, [Token])
