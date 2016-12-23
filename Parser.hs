@@ -81,8 +81,8 @@ parseCompoundStatement input = let (statements, restOfInput) = mustBe "Statement
           --    ;
 parseStatements :: [Token] -> Maybe (Statements, [Token])
 parseStatements input = let (statement, restOfInput) = mustBe "Statement" input parseStatement
-  in case head restOfInput of
-    COMMA _ -> let (tail, afterTail) = mustBe "Statement" restOfInput parseStatements
+  in case restOfInput of
+    (SEMI _:other) -> let (tail, afterTail) = mustBe "Statement" other parseStatements
       in Just ([statement] ++ tail, afterTail)
     otherwise -> Just ([statement], restOfInput)
 
