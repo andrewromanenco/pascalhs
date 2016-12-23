@@ -27,7 +27,7 @@ main = hspec $ do
 
   describe "parse elements" $ do
     it "identifier" $ do
-      parseIdentifier [IDENT c "name", EOF] `shouldBe` ("name", [EOF])
+      parseIdentifier [IDENT c "name", EOF] `shouldBe` Just("name", [EOF])
 
     it "IdentifierList single" $ do
       parseIdentifierList [IDENT c "name", EOF] `shouldBe` (["name"], [EOF])

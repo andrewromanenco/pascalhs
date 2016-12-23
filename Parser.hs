@@ -50,9 +50,9 @@ parseProgram input = let (pHead, restOfInput) = mustBe "Program or Unit" input p
 
 
 parseProgramHeading :: [Token] -> Maybe (ProgramHeading, [Token])
-parseProgramHeading (UNIT _: restOfInput) = let (name, rest) = parseIdentifier restOfInput
+parseProgramHeading (UNIT _: restOfInput) = let (name, rest) = mustBe "Identifier" restOfInput parseIdentifier
   in Just (UnitHeading name, semiExpected rest)
-parseProgramHeading (PROGRAM _: restOfInput) = let (name, rest) = parseIdentifier restOfInput
+parseProgramHeading (PROGRAM _: restOfInput) = let (name, rest) = mustBe "Identifier" restOfInput parseIdentifier 
   in case head rest of
     LPAREN _ -> let (values, deepRest) = parseIdentifierList(tail rest)
               in Just ((ProgramHeading name (Just values), semiExpected (rparenExpected deepRest)))
@@ -76,12 +76,51 @@ parseCompoundStatement input = let (statements, restOfInput) = mustBe "Statement
   in Just (CompoundStatement statements, mustBeToken "END" restOfInput)
 
 
+          -- statements
+          --    : statement (SEMI statement)*
+          --    ;
 parseStatements :: [Token] -> Maybe (Statements, [Token])
-parseStatements input = Just ([], input)
+parseStatements input = let (statement, restOfInput) = mustBe "Statement" input parseStatement
+  in case head restOfInput of
+    COMMA _ -> let (tail, afterTail) = mustBe "Statement" restOfInput parseStatements
+      in Just ([statement] ++ tail, afterTail)
+    otherwise -> Just ([statement], restOfInput)
+
+
+        -- statement
+        --    : label COLON unlabelledStatement
+        --    | unlabelledStatement
+        --    ;
+parseStatement :: [Token] -> Maybe (Statement, [Token])
+parseStatement input = parseUnlabelledStatement input
+
+        --   unlabelledStatement
+        --      : simpleStatement
+        --      | structuredStatement
+        --      ;
+parseUnlabelledStatement :: [Token] -> Maybe (Statement, [Token])
+parseUnlabelledStatement input = Just (Statement, input)
+
+
+        --  simpleStatement
+        --     : assignmentStatement
+        --     | procedureStatement
+        --     | gotoStatement
+        --     | emptyStatement
+        --     ;
+parseSimpleStatement :: [Token] -> Maybe (Statement, [Token])
+parseSimpleStatement input = parseProcedureStatement input
+
+
+        -- procedureStatement
+        --    : identifier (LPAREN parameterList RPAREN)?
+        --    ;
+parseProcedureStatement :: [Token] -> Maybe (Statement, [Token])
+parseProcedureStatement input = Just (Statement, input)
 
 
 parseIdentifierList :: [Token] -> (IdentifierList, [Token])
-parseIdentifierList input@(IDENT _ _:_) = let (name, restOfInput) = parseIdentifier input
+parseIdentifierList input@(IDENT _ _:_) = let (name, restOfInput) = mustBe "Identifier" input parseIdentifier
   in case head restOfInput of
     COMMA _ -> let (list, rest) = parseIdentifierList(tail restOfInput)
                in ([name] ++ list, rest)
@@ -89,9 +128,9 @@ parseIdentifierList input@(IDENT _ _:_) = let (name, restOfInput) = parseIdentif
 parseIdentifierList (x:_) = tokenExpectationError "Identifier" x
 
 
-parseIdentifier :: [Token] -> (String, [Token])
-parseIdentifier (IDENT _ name:restOfInput) = (name, restOfInput)
-parseIdentifier (x:_) = tokenExpectationError "Identifier" x
+parseIdentifier :: [Token] -> Maybe (String, [Token])
+parseIdentifier (IDENT _ name:restOfInput) = Just (name, restOfInput)
+parseIdentifier (x:_) = Nothing
 
 
 semiExpected :: [Token] -> [Token]
