@@ -1,8 +1,10 @@
 module ParserSpec where
 
 import Test.Hspec
-import Parser
+import AST
 import LexerTokens
+import Parser
+
 
 main :: IO ()
 c = Cursor 3 4
