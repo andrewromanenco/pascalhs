@@ -1,6 +1,6 @@
 
 program HelloWorld;
 begin
- (*write('Hello World.');
- readln;*)
+ (*write('Hello World.');*)
+ readln
 end.

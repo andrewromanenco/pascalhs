@@ -22,7 +22,7 @@ data CompoundStatement = CompoundStatement Statements
                        deriving(Show, Eq)
 
 
-data Statement = Statement
+data Statement = ProcedureStatement String
               deriving (Show, Eq)
 
 type Statements = [Statement]
@@ -52,7 +52,7 @@ parseProgram input = let (pHead, restOfInput) = mustBe "Program or Unit" input p
 parseProgramHeading :: [Token] -> Maybe (ProgramHeading, [Token])
 parseProgramHeading (UNIT _: restOfInput) = let (name, rest) = mustBe "Identifier" restOfInput parseIdentifier
   in Just (UnitHeading name, semiExpected rest)
-parseProgramHeading (PROGRAM _: restOfInput) = let (name, rest) = mustBe "Identifier" restOfInput parseIdentifier 
+parseProgramHeading (PROGRAM _: restOfInput) = let (name, rest) = mustBe "Identifier" restOfInput parseIdentifier
   in case head rest of
     LPAREN _ -> let (values, deepRest) = parseIdentifierList(tail rest)
               in Just ((ProgramHeading name (Just values), semiExpected (rparenExpected deepRest)))
@@ -99,7 +99,7 @@ parseStatement input = parseUnlabelledStatement input
         --      | structuredStatement
         --      ;
 parseUnlabelledStatement :: [Token] -> Maybe (Statement, [Token])
-parseUnlabelledStatement input = Just (Statement, input)
+parseUnlabelledStatement input = parseSimpleStatement input
 
 
         --  simpleStatement
@@ -116,7 +116,8 @@ parseSimpleStatement input = parseProcedureStatement input
         --    : identifier (LPAREN parameterList RPAREN)?
         --    ;
 parseProcedureStatement :: [Token] -> Maybe (Statement, [Token])
-parseProcedureStatement input = Just (Statement, input)
+parseProcedureStatement input = let (name, restOfInput) = mustBe "Identifier" input parseIdentifier
+  in Just(ProcedureStatement name, restOfInput)
 
 
 parseIdentifierList :: [Token] -> (IdentifierList, [Token])
