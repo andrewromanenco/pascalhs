@@ -105,7 +105,7 @@ parseProcedureStatement input = let (name, restOfInput) = mustBe "Identifier" in
         --    : actualParameter (COMMA actualParameter)*
         --    ;
 parseParameterList :: [Token] -> Maybe ([Parameter], [Token])
-parseParameterList (STRING_LITERAL _ value: restOfInput) = Just ([StringParameter value], restOfInput)
+parseParameterList (STRING_LITERAL _ value: restOfInput) = Just ([StringParameter (init (tail value))], restOfInput)
 parseParameterList input = Nothing
 
 
