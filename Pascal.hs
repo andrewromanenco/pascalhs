@@ -7,6 +7,7 @@ import System.Environment
 
 import Lexer
 import Parser
+import Interpreter
 
 
 main :: IO ()
@@ -30,4 +31,6 @@ runParser path = do
   putStrLn (show (parse (tokenize sourceCode)))
 
 runInterpreter :: String -> IO ()
-runInterpreter path = putStrLn "Interpreter is work-in-progress"
+runInterpreter path = do
+  sourceCode <- readFile path
+  interpret (parse (tokenize sourceCode))
