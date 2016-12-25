@@ -87,18 +87,23 @@ parseUnlabelledStatement input = parseSimpleStatement input
         --     | emptyStatement
         --     ;
 parseSimpleStatement :: [Token] -> Maybe (Statement, [Token])
-parseSimpleStatement input = parseProcedureStatement input
+parseSimpleStatement input = let proc = parseProcedureStatement input
+  in case proc of
+    Nothing -> Just (EmptyStatement, input)
+    otherwise -> proc
 
 
         -- procedureStatement
         --    : identifier (LPAREN parameterList RPAREN)?
         --    ;
 parseProcedureStatement :: [Token] -> Maybe (Statement, [Token])
-parseProcedureStatement input = let (name, restOfInput) = mustBe "Identifier" input parseIdentifier
-  in case restOfInput of
-    (LPAREN _:other) -> let (pList, deepRest) = mustBe "Parameter" other parseParameterList
-      in Just (ProcedureStatement name pList, mustBeToken "RPAREN" deepRest)
-    otherwise -> Just(ProcedureStatement name [], restOfInput)
+parseProcedureStatement input = let mIdent = parseIdentifier input
+  in case mIdent of
+    Nothing -> Nothing
+    Just (name, restOfInput) -> case restOfInput of
+        (LPAREN _:other) -> let (pList, deepRest) = mustBe "Parameter" other parseParameterList
+          in Just (ProcedureStatement name pList, mustBeToken "RPAREN" deepRest)
+        otherwise -> Just(ProcedureStatement name [], restOfInput)
 
 
         -- parameterList

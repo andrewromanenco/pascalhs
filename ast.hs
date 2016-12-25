@@ -18,6 +18,7 @@ data CompoundStatement = CompoundStatement Statements
 
 
 data Statement = ProcedureStatement String [Parameter]  -- name and params
+              | EmptyStatement
               deriving (Show, Eq)
 
 data Parameter = StringParameter String

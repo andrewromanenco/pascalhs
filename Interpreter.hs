@@ -32,6 +32,7 @@ instance Interpret Statement where
       "write" -> pWrite params
       "readln" -> pReadLn params
       otherwise -> error ("Proc not yet implemented: " ++ procName)
+  interpret EmptyStatement = return ()
 
 
 pWrite :: [Parameter] -> IO ()
